@@ -1,0 +1,44 @@
+{
+    "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+    "manifestVersion": "1.5",
+    "version": "1.0.0",
+    "id": "b97e0b10-c9ee-43fc-88d9-4aef642c449b",
+    "packageName": "com.bellows.teams.app",
+    "developer": {
+        "name": "Bellows",
+        "websiteUrl": "https://banjo.ngrok.io",
+        "privacyUrl": "https://banjo.ngrok.io/privacy.html",
+        "termsOfUseUrl": "https://banjo.ngrok.io/termsofuse.html"
+    },
+    "icons": {
+        "color": "color.png",
+        "outline": "outline.png"
+    },
+    "name": {
+        "short": "Bellows",
+        "full": ""
+    },
+    "description": {
+        "short": "Bellows for Teams",
+        "full": "Experience enhanced class management with Bellows for Microsoft Teams"
+    },
+    "accentColor": "#388285",
+    "staticTabs": [
+        {
+            "entityId": "BellowsTab",
+            "name": "Bellows",
+            "contentUrl": "https://banjo.ngrok.io/signin.html",
+            "websiteUrl": "https://banjo.ngrok.io/",
+            "scopes": [
+                "personal"
+            ]
+        }
+    ],
+    "permissions": [
+        "identity",
+        "messageTeamMembers"
+    ],
+    "validDomains": [
+     
+    ]
+}

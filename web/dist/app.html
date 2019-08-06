@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bellows</title>
+    <link rel='manifest' href='/manifest.json'>
+    <script>
+    // This is the service worker with the Cache-first network
+
+// Add this below content to your HTML page, or add the js file to your page at the very top to register service worker
+
+// Check compatibility for the browser we're running this in
+if ("serviceWorker" in navigator) {
+  if (navigator.serviceWorker.controller) {
+    console.log("[PWA Builder] active service worker found, no need to register");
+  } else {
+    // Register the service worker
+    navigator.serviceWorker
+      .register("pwabuilder-sw.js", {
+        scope: "./"
+      })
+      .then(function (reg) {
+        console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+      });
+  }
+}
+</script>
+  </head>
+  <body>
+      <bellows-app></bellows-app>
+      <script type="text/javascript" src="bundle.js"></script>
+      <script>
+          let app = document.querySelector('bellows-app');
+          let view = document.createElement('main-view');
+          app.navigate(view);
+      </script>
+  </body>
+</html>
