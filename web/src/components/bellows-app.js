@@ -1,3 +1,10 @@
+  
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
 const BaseViewElement = require("./base-view");
 const { Providers, MsalProvider, TeamsProvider } = require("@microsoft/mgt");
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
