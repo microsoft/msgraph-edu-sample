@@ -1,3 +1,10 @@
+  
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
 const BaseViewElement = require("./base-view");
 const { Providers, MsalProvider, TeamsProvider } = require("@microsoft/mgt");
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
@@ -5,6 +12,8 @@ require("./drop-down-view");
 require("./main-view");
 require("./app-header-view");
 require("./teams-auth-view");
+
+const { PwaBuilder} = require("../services/pwabuilder-sw.js");
 
 class BellowsApp extends BaseViewElement {
   static tagName = "bellows-app";
@@ -50,6 +59,22 @@ class BellowsApp extends BaseViewElement {
               clientId: clientId,
               scopes: scopes
           });
+      }
+
+
+      if ("serviceWorker" in navigator) {
+        if (navigator.serviceWorker.controller) {
+          console.log("[PWA Builder] active service worker found, no need to register");
+        } else {
+          // Register the service worker
+          navigator.serviceWorker
+            .register(PwaBuilder, {
+              scope: "./"
+            })
+            .then(function (reg) {
+              console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+            });
+        }
       }
       this.contentRoot = this.shadowRoot.getElementById("content-root");
       window.addEventListener("popstate", () => {

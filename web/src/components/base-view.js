@@ -1,3 +1,10 @@
+  
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
 class BaseViewElement extends HTMLElement {
 
     constructor(tagName) {
@@ -6,9 +13,9 @@ class BaseViewElement extends HTMLElement {
 
         let template = this.getTemplate(tagName);
         let templateContent = template.content;
-
+        let clone = document.importNode(templateContent, true);
         this.attachShadow({ mode: "open" }).appendChild(
-            templateContent.cloneNode(true)
+           clone
         );
     }
 
@@ -20,7 +27,6 @@ class BaseViewElement extends HTMLElement {
      * @memberof BaseViewElement
      */
     getTemplate(tagName) {
-    
         let templateString = require(`../templates/${tagName}.html`);
         let template = document.createElement("template");
         template.innerHTML = templateString;

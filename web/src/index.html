@@ -8,10 +8,10 @@
 
 <body>
   <bellows-app></bellows-app>
-  <script type="text/javascript" src="bundle.js"></script>
   <script>
     let app = document.querySelector('bellows-app');
-    let view = document.createElement('teams-auth-view');
+    console.log("test index.js", app);
+    let view = document.createElement('drop-down-view');
     app.navigate(view);
   </script>
 </body>
