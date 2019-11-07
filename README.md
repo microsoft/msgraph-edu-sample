@@ -101,12 +101,17 @@ We provide a sample manifest located in the teams folder that can be used to ins
 
 ## Key concepts
 
+Teams integrations is an important aspect of this project. For instance, lets examine the contents of the `teams-helper.js` under the services folder.
 
-The routing in this application is handled in bellows.js and is built from scratch.
+``` async sendChatMessage(people, channelId, groupNameInput) ``` is a nifty function that accepts: all people chosen from the [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker), a Teams channel Id, and a String that could be used for many purposes. In this project we are sending a message to our colleagues when on creation of a new teams channel. 
 
-This project defines many custom web components. The visual elements live in the `web/src/templates` folder. The business logic associated with the User interface element lives in the web/src/components folder.
+The services folder is chalk full of Microsoft integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system.
 
-In particular, the `create-study-group-view.js` file contains great introductory functions for developers interested in better leveraging the Microsoft Graph Toolkit. 
+This project defines many custom web components. The visual HTML template elements live in the `web/src/templates` folder. The business logic associated with the User interface element lives in the web/src/components folder.
+
+Modularization of code is an important principle of software engineering, for a cononical example of modern web components and their robust nature
+look into the interactions between `create-study-group-view,js`, `study-group-item.js`, and `study-group-view.js`. 
+
 
 ## Contributing
 

@@ -52,7 +52,7 @@ class MainViewElement extends BaseViewElement {
                   .api(`/education/classes/${params.classId}/teachers`).get();
 
               let groupName = groupInfo["displayName"];
-              teamName.innerHTML = groupName;
+              teamName.textContent = groupName;
               let startDate = process.env.START_DATE;
               let endDate = process.env.END_DATE;
               let year = process.env.YEAR;
@@ -60,8 +60,8 @@ class MainViewElement extends BaseViewElement {
 
        
 
-              this.shadowRoot.querySelector(".class-dates").innerHTML = courseDates;
-              this.shadowRoot.querySelector(".class-name").innerHTML =  classInfo["displayName"];
+              this.shadowRoot.querySelector(".class-dates").textContent = courseDates;
+              this.shadowRoot.querySelector(".class-name").textContent =  classInfo["displayName"];
 
               let teacherIndex = teacherInfo["value"]["length"] - 3;
               let teacher = teacherInfo["value"][teacherIndex];
