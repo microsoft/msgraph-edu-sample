@@ -4,13 +4,11 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
-    entry: './src/index.js',
-    
+    entry: './src/index.js',   
     output: {
         path: __dirname + '/dist',
         filename: 'bundle.js'
-    },
-    
+    },  
     module: {
         rules: [{ 
             test: /\.js$/, 
@@ -55,7 +53,6 @@ module.exports = {
             ]
         }]
     },
-
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
@@ -81,7 +78,6 @@ module.exports = {
                     src: './src/assets/icons/android-launchericon-512-512.png',
                     sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
                 }
-
                    ]}),
         new Dotenv()
     ]
