@@ -5,9 +5,9 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-require('../assets/background.png');
+require("../assets/background.png");
 const BaseViewElement = require("./base-view");
-const {Providers} = require("@microsoft/mgt");
+const {Providers, TeamsProvider} = require("@microsoft/mgt");
 
 
 class DropDownViewElement extends BaseViewElement {
@@ -17,6 +17,11 @@ class DropDownViewElement extends BaseViewElement {
   constructor() {
 
       super(DropDownViewElement.tagName);
+
+      if(TeamsProvider.isAvailable){
+          let loginButton = this.shadowRoot.querySelector(".login-component");
+          loginButton.parentNode.removeChild(loginButton);
+      }
    
       this.populateCourseDropDown();
       this.populateGroupDropDown();
@@ -64,6 +69,7 @@ class DropDownViewElement extends BaseViewElement {
   async populateCourseDropDown(){
 
       let provider = Providers.globalProvider;
+      console.log("drop-down-providers", provider); 
       if (provider) {
 
           try {

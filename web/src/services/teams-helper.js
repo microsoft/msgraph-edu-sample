@@ -5,10 +5,52 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-const {Providers} = require("@microsoft/mgt");
+const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
+const { Providers, TeamsProvider, MsalProvider} = require("@microsoft/mgt");
 
 class TeamsHelper {
+
+    _scopes = [
+        "user.read",
+        "people.read",
+        "user.readbasic.all",
+        "contacts.read",
+        "calendars.read",
+        "files.read",
+        "group.read.all",
+        "tasks.readwrite",
+        "Group.ReadWrite.All",
+        "EduRoster.ReadBasic",
+        "User.Read.All",
+        "User.ReadWrite.All"
+    ];
     constructor() {}
+    
+
+
+    /**
+     * Handles authentication for various providers 
+     *
+     * @memberof TeamsHelper
+     */
+    handleProviders(){
+
+        const clientId = process.env.CLIENT_ID;
+        if (TeamsProvider.isAvailable) {
+            TeamsProvider.microsoftTeamsLib = teams;
+            Providers.globalProvider = new TeamsProvider({
+                clientId: clientId,
+                authPopupUrl: "teams-auth-view.html",
+                scopes: this._scopes
+            });
+        } else {
+            Providers.globalProvider = new MsalProvider({
+                clientId: clientId,
+                scopes: this._scopes
+            });
+        }
+
+    }
 
     /**
    * Send a notification for creation of a channel.

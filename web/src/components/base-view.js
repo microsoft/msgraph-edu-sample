@@ -7,6 +7,7 @@
  */
 class BaseViewElement extends HTMLElement {
 
+
     constructor(tagName) {
 
         super();
@@ -15,7 +16,7 @@ class BaseViewElement extends HTMLElement {
         let templateContent = template.content;
         let clone = document.importNode(templateContent, true);
         this.attachShadow({ mode: "open" }).appendChild(
-           clone
+            clone
         );
     }
 

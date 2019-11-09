@@ -27,7 +27,7 @@ class AppHeaderViewElement extends BaseViewElement {
    *
    * @memberof AppHeaderViewElement
    */
-    backArrowClick() {
+  backArrowClick() {
       window.location.href = "./";
   }
 }

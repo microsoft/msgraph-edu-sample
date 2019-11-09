@@ -1,12 +1,13 @@
   
 /**
  * -------------------------------------------------------------------------------------------
- * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+` * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
-const { TeamsProvider } = require("@microsoft/mgt");
+const {TeamsProvider } = require("@microsoft/mgt");
+const TeamsHelper = require("../services/teams-helper");
 const BaseViewElement = require("./base-view");
 
 class TimelineViewElement extends BaseViewElement {
@@ -14,6 +15,10 @@ class TimelineViewElement extends BaseViewElement {
 
   constructor() {
       super(TimelineViewElement.tagName);
+
+
+      let teamsHelper = new TeamsHelper();
+      teamsHelper.handleProviders();
 
       let url = new URLSearchParams(location.search);
 
