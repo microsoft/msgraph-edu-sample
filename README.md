@@ -42,15 +42,16 @@ Create your own Azure tenant.
 
 * [Register an Azure Active Directory app in Azure portal](https://docs.microsoft.com/en-us/skype-sdk/ucwa/registeringyourapplicationinazuread)
 
-* Ensure you register the app as multi tenant, make sure the [ID token authentication](https://stackoverflow.com/questions/49422588/aadsts70005-response-type-id-token-is-not-enabled-for-the-application) is set. Set the redirect URI to https://localhost8080, or configure it to your projects requirements. Sign in as an admin to grant all the necessary permissions. 
+* Ensure you register the app as multi-tenant, make sure the [ID token authentication](https://stackoverflow.com/questions/49422588/aadsts70005-response-type-id-token-is-not-enabled-for-the-application) is set. Set the redirect URI to https://localhost8080, or configure it to your projects requirements. Sign in as an admin to grant all the necessary permissions. 
 
 * Retrieve the clientID [Azure Portal](https://portal.azure.com) and set the environment variables accordingly.
 
+
 #### Environment Variables
 
-Applications will need to populate the following variables via an environment variables. For instance a locally run application might create a a .env file.
+Applications will need to populate the following variables via an environment variable. For instance, a locally run application might create a .env file.
 
-If you choose to deploy this app to Azure you can set environment variables in the Azure App Service User Interface.
+If you choose to deploy this app to Azure, you can set environment variables in the Azure App Service User Interface.
 
 * CLIENT_ID (mandatory)
 * REL_FILE_PATH (optional)
@@ -86,7 +87,7 @@ Navigate to the web folder and run the following commands:
 
 ### Teams Tab
 
-We provide a sample manifest located in the teams folder that can be used to install the application as a Teams tab. To test your own app locally we recomend levraging ngrok until you have quality tested functionality and are ready for public app deployment. Developers will need to update all URLs in the manifest for their own app instance. Once the manifest is updated a developer can install the app with [App Studio for Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/get-started/get-started-app-studio) 
+We provide a sample manifest located in the teams folder that can be used to install the application as a Teams tab. To test your own app locally we recommend leveraging ngrok until you have quality tested functionality and are ready for public app deployment. Developers will need to update all URLs in the manifest for their own app instance. Once the manifest is updated a developer can install the app with [App Studio for Microsoft Teams](https://docs.microsoft.com/en-us/microsoftteams/platform/get-started/get-started-app-studio) 
 
 ### Resources
 
@@ -103,7 +104,7 @@ We provide a sample manifest located in the teams folder that can be used to ins
 In this section, I walk the reader through a few code snippets.
 ### Microsoft Graph Toolkit
 
- If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select collueges within an Azure tennant in a clean crossa platform interface.
+ If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select colleagues within an Azure tenant in a clean cross platform interface.
  
  Below is the HTML for the people picker that can be found in `create-study-group-view.html`. Note, the div wrapper is used for CSS styling.
 ```
@@ -113,7 +114,7 @@ In this section, I walk the reader through a few code snippets.
 
 ```
 
-Now, let's take a look at how to access the choosen people in the `create-study-group-view.js` file.
+Now, let's take a look at how to access the chosen people in the `create-study-group-view.js` file.
 
 ```
 let people = document.body
@@ -122,7 +123,7 @@ let people = document.body
 ```
 Now we can do some neat stuff with the chosen individuals.
 
-  The below function showcases an integration between the People-Picker and Microsoft Teams. In this project we are sending a message to our colleagues when on creation of a new teams channel.
+The below function showcases an integration between the People-Picker and Microsoft Teams. In this project we are sending a message to our colleagues when on creation of a new teams channel.
 
 
 ``` 
@@ -157,7 +158,7 @@ async sendChatMessage(people, channelId, groupNameInput) {
 
 ### Microsoft Teams
 
-Teams integrations is another cool aspect of this project. For example, lets examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundemental to this apps authorization flow.
+Teams integrations is another cool aspect of this project. For example, let’s examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundamental to this app’s authorization flow.
 
 ```  
   handleProviders(){
@@ -179,14 +180,14 @@ Teams integrations is another cool aspect of this project. For example, lets exa
     }
 ```
 
-If the app is running Microsoft Teams the Teams auth architechture is used, otherwise, the web app model is levraged.  
+If the app is running Microsoft Teams the Teams auth architecture is used, otherwise, the web app model is leveraged.  
 
 
 ### PWA Builder
 
-The services folder is chalk full of fantastic open source integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system. The Open Source [PWA Builder](https://www.pwabuilder.com/) initatitive has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications!
+The services folder is chalk full of fantastic open source integrations, if we look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files and download the app onto a machines operating system. The Open Source [PWA Builder](https://www.pwabuilder.com/) initiative has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications!
 
-The below code gives an example of how to integrate a service worker into a babel/webpack project. Rather than mannually copy/pasting a service worker to the root of the project, we can add the PWA service worker logic to the `bellows-app.js` file. This ensures service worker benafits are bundled on build into the distribution instance of our app. 
+The below code gives an example of how to integrate a service worker into a babel/webpack project. Rather than manually copy/pasting a service worker to the root of the project, we can add the PWA service worker logic to the `bellows-app.js` file. This ensures service worker benefits are bundled on build into the distribution instance of our app.  
 
 ```
 
@@ -211,10 +212,11 @@ The below code gives an example of how to integrate a service worker into a babe
 ### Web Components
 This project defines many custom web components. The visual HTML template elements live in the `web/src/templates` folder. The business logic associated with the user interface element lives in the web/src/components folder.
 
-Modularization of code is an important principle of software engineering, for a cononical example of modern web components and their robust nature
+Modularization of code is an important principle of software engineering, for a canonical example of modern web components and their robust nature
 look into the interactions between `create-study-group-view.js`, `study-group-item.js`, and `study-group-view.js`. 
 
-`create-study-group-view.js` creates a Teams channel based on user input, and creates an event to notify `study-group-view.js`.
+`create-study-group-view.js` creates a Teams channel based on user input and creates an event to notify `study-group-view.js`.
+
 ```
       let createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${url.get(
           "groupId"
@@ -246,7 +248,7 @@ Let's take a look at `study-group-view.js`, and the function that is bound to th
     }
 ```
 
-Notice that the creation of a study group item component element, population of the former element's content from the event that was recieved from the create-study-group component. This example provides a simple scenario for others to expand upon and customize to their unique use cases.
+Notice that the creation of a study group item component element, population of the former element's content from the event that was received from the create-study-group component. This example provides a simple scenario for others to expand upon and customize to their unique use cases.
 
 ## Contributing
 
