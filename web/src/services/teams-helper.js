@@ -49,7 +49,6 @@ class TeamsHelper {
                 scopes: this._scopes
             });
         }
-
     }
 
     /**

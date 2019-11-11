@@ -13,7 +13,6 @@ The purpose of this demo application is showcase Microsoft Graph in a real-world
 | `teams`           | Manifest and assets to create Microsoft Teams app  |
 | `web`             | Example code, also a self contained npm project    |
 | `web/src`         | Source code for the project.                       |
-| `web/dist`        | Webpack bundled output for the web npm project     |
 | `README.md`       | This README file.                                  |
 | `LICENSE`         | The license for the sample.                        |
 
@@ -101,17 +100,113 @@ We provide a sample manifest located in the teams folder that can be used to ins
 
 ## Key concepts
 
-Teams integrations is an important aspect of this project. For instance, lets examine the contents of the `teams-helper.js` under the services folder.
+In this section, I walk the reader through a few code snippets.
+### Microsoft Graph Toolkit
 
-``` async sendChatMessage(people, channelId, groupNameInput) ``` is a nifty function that accepts: all people chosen from the [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker), a Teams channel Id, and a String that could be used for many purposes. In this project we are sending a message to our colleagues when on creation of a new teams channel. 
+ If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select collueges within an Azure tennant in a clean crossa platform interface. The below function showcases an integration between the People-Picker and Microsoft Teams. In this project we are sending a message to our colleagues when on creation of a new teams channel.
 
-The services folder is chalk full of Microsoft integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system.
 
-This project defines many custom web components. The visual HTML template elements live in the `web/src/templates` folder. The business logic associated with the User interface element lives in the web/src/components folder.
+``` 
+async sendChatMessage(people, channelId, groupNameInput) {
+
+    [...define variables...]
+
+    for (let i = 0; i < people.length; i++) {
+
+                let mentionInstance = {
+                    id: i,
+                    mentionText: people[i]["displayName"],
+                    mentioned: {
+                        user: {
+                            displayName: people[i]["displayName"],
+                            id: people[i]["id"],
+                            userIdentityType: "aadUser"
+                        }
+                    }
+                };
+                mentionsJsonArray.push(mentionInstance);
+                contentString += `<at id=\"${i}\">${people[i]["displayName"]}</at>, `;
+            }
+
+    [... HTTP post to Microsoft graph ...]
+
+
+}
+
+ ``` 
+
+
+### Microsoft Teams
+
+Teams integrations is another cool aspect of this project. For example, lets examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundemental to this apps architecture.
+
+```  
+  handleProviders(){
+
+        const clientId = process.env.CLIENT_ID;
+        if (TeamsProvider.isAvailable) {
+            TeamsProvider.microsoftTeamsLib = teams;
+            Providers.globalProvider = new TeamsProvider({
+                clientId: clientId,
+                authPopupUrl: "teams-auth-view.html",
+                scopes: this._scopes
+            });
+        } else {
+            Providers.globalProvider = new MsalProvider({
+                clientId: clientId,
+                scopes: this._scopes
+            });
+        }
+    }
+```
+
+This code asks the Microsoft graph for permissions (i.e., scopes) for a given Azure tenant App Service identiefied via the client Id based on the context of the app's runtime. If the app is running within a Microsoft Teams tab the redirect callback url is set to the custom components "teams-auth-view.html", otherwise the Providers component from the Microsoft Graph Toolkit handles the authorization flow.
+
+
+### PWA Builder
+
+The services folder is chalk full of Microsoft integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system. Microsoft's [PWA Builder](https://www.pwabuilder.com/) initatitive has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications! For instance, the [geolocation API](https://www.pwabuilder.com/feature/Use%20Geolocation) would help facilitate localization of an app's content. Programatic adaption of language content based on the users location is an important consideration in todays global learning envirnment.
+
+
+### Web Components
+This project defines many custom web components. The visual HTML template elements live in the `web/src/templates` folder. The business logic associated with the user interface element lives in the web/src/components folder.
 
 Modularization of code is an important principle of software engineering, for a cononical example of modern web components and their robust nature
-look into the interactions between `create-study-group-view,js`, `study-group-item.js`, and `study-group-view.js`. 
+look into the interactions between `create-study-group-view.js`, `study-group-item.js`, and `study-group-view.js`. 
 
+`create-study-group-view.js` creates a Teams channel based on user input, and creates an event to notify `study-group-view.js`.
+```
+      let createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${url.get(
+          "groupId"
+      )}/channels`;
+      let result = await graphClient
+          .api(createNewChannelUrl).post(channel);
+
+      let  channelId = result["id"];
+      channel["webUrl"] = result["webUrl"];
+
+      this.createEvent(channel);
+```
+
+Let's take a look at `study-group-view.js`, and the function that is bound to the channel creation event:
+
+```
+ async refreshChannels(e){
+
+        let content = e.detail;
+        let item = document.createElement("study-group-item");
+
+        item.setAttribute("display-name", content["displayName"]);
+        item.setAttribute("description", content["description"]);
+        item.onclick = function () {parent.open(content["webUrl"]);};
+       
+        this._studyGroupItems.push(item);
+        let itemsContainer = this.shadowRoot.querySelector(".items-container");
+        itemsContainer.appendChild(item);
+    }
+```
+
+Notice that the creation of a study group item component element, population of the former element's content from the event that was recieved from the create-study-group component. This example provides a simple scenario for others to expand upon and customize to their unique use cases.
 
 ## Contributing
 
