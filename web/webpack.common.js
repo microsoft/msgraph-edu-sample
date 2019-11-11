@@ -1,54 +1,74 @@
+const path = require('path');
+const Dotenv = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const Dotenv = require('dotenv-webpack')
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
-    entry: './src/index.js',
-    
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        filename: 'app.bundle.js'
+    },  
+    resolve: {
+        extensions: ['.ts', '.js', '.json']
     },
-    
     module: {
         rules: [{ 
-            test: /\.js$/, 
+            test: /\.(ts|js)$/,
+            exclude: /node_modules/,
             use: 'babel-loader' 
         }, {
             test: /\.html$/,
+            loader: 'html-loader'
+        }, {
+            test: /\.(jp?g|png|gif)$/i,
             use: {
-                loader: 'html-loader',
-                options: {
-                    interpolate: true
+                loader: 'url-loader',
+                options:{
+                    limit: false,
+                    name: '[name].[ext]'
                 }
             }
-        }, { 
-            test: /\.(jpe?g|png|gif|svg)$/i,
-            use: {
+        }, {
+            test:/\.(jp?g|gif)|(svg)$/i,
+            use:{
                 loader: 'file-loader',
-                options: {
-                    name: '[path][name].[ext]'
+                options:{
+                    name:'[name].[ext]'
                 }
             }
-        }, { 
-            test: /\.scss$/,
-            use: [
-                { loader: "style-loader" }, // creates style nodes from JS strings
-                { loader: "css-loader" }, // translates CSS into CommonJS
-                { 
-                    loader: "sass-loader",  // compiles Sass to CSS, using Node Sass by default
-                    options: {
-                        implementation: require("sass")
-                    }
-                }
-            ]
+        }, {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
         }]
     },
-
     plugins: [
+        new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            hash: true,
-            filename: './dist/index.html'
+            title: 'Bellows'
         }),
-        new Dotenv()
+        new WebpackPwaManifest({
+            filename: '[name].[ext]',
+            dir: "ltr",
+            lang: "en",
+            name: 'Bellows College',
+            short_name: 'Bellows',
+            scope: "/",
+            display: "standalone",
+            start_url: "/",
+            description: 'An app for student project managment.',
+            background_color: '#5b7ad0',
+            crossorigin: '', //can be null, use-credentials or anonymous
+            icons: [{
+                src: './assets/icons/android-launchericon-512-512.png',
+                sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+            }]
+        }),
+        new Dotenv(),
+        new CopyWebpackPlugin([
+            { from: 'public', to: '.' },
+            { from: 'assets', to: '.' }
+        ])
     ]
 };

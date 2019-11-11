@@ -89,9 +89,9 @@ typings/
 
 package-lock.json
 
-#Bundled Code
-dist/bundle.js
-dist/bundle.js.map
+#Dist folder
+dist/
+lib/
 
 #lint config
 .eslintrc.json

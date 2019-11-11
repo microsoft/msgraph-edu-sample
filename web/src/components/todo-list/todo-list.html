@@ -1,0 +1,84 @@
+<style>
+  .header-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 24px 24px 24px 0;
+  }
+
+  .section-title {
+    font-size: 33px;
+    font-style: Segeo UI;
+  }
+
+  .buttons-panel {
+    display: flex;
+  }
+
+  .buttons-panel > div {
+    min-width: 32px;
+    min-height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    cursor: pointer;
+  }
+
+  .content-panel {
+    background-color: #ffffff;
+    box-shadow: 0px 2.61404px 16.9912px rgba(0, 0, 0, 0.042);
+    height: 552px;
+    padding: 20px 0 0 0;
+    overflow-y:auto;
+  }
+
+  .not-signed-in {
+    font-size: 32px;
+    font-weight: bolder;
+    text-align: center;
+    padding: 12px;
+    opacity: 60%;
+    padding-top:80px;
+  }
+
+  mgt-tasks {
+    --task-box-shadow: inset 0 -1px 0 0 rgba(165, 165, 165, 0.33);
+    font-style: normal;
+    font-weight: 350;
+    line-height: 27px;
+    overflow-y:auto;
+  }
+</style>
+<div class="header-panel">
+  <div class="section-title">To-do list</div>
+  <div class="buttons-panel">
+    <div class="create-button">
+      <svg
+        width="22"
+        height="22"
+        viewBox="0 0 22 22"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10.9854 20.9677L10.9854 0.997147"
+          stroke="#3063B2"
+          stroke-width="1.2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M20.9696 10.9853L0.9991 10.9853"
+          stroke="#3063B2"
+          stroke-width="1.2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+  </div>
+</div>
+<div class="content-panel">
+
+    <mgt-tasks hide-header data-source="todo"></mgt-tasks>
+
+</div>

@@ -1,0 +1,102 @@
+<style>
+    :host {
+        all: initial;
+        display: block;
+        contain: content;
+        font-family: 'Segoe UI';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+        background: rgba(31, 44, 45, 0.2);
+    }
+
+    .light-dismiss-panel {
+        width: 100%;
+        height: 100%;
+    }
+
+    .flyout-panel {
+        background-color: #FFFFFF;
+        box-shadow: 0px 10.6312px 16px rgba(180, 180, 180, 0.322), 0px 1.3289px 2.65781px rgba(68, 68, 68, 0.3);
+        border-radius: 2px;
+        padding: 10px;
+        display: inline-flex;
+        flex-direction: column;
+        max-width: 230px;
+    }
+
+    .group-name-input-header, 
+    .people-picker-input-header,
+    .users-input-header,
+    .group-description-input-header {
+        font-size: 12px;
+        line-height: 14px;
+        color: #454545;
+        opacity: 0.6;
+        margin-left: 12px;
+        padding-top:5px; 
+    }
+
+    .users-input-header {
+        margin-top: 24px;
+    }
+
+    .group-name-input,
+    .users-input,
+    .group-description-input {
+        margin-left: 12px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+        height: 18px;
+        font-size: 14px;
+        line-height: 16px;
+    }
+    input {
+        border: none;
+        border-style:none;
+    }
+
+    hr {
+        height: 2px;
+        width: 228px;
+        background: #3063B2;
+        margin: 0;
+        border: none;
+    }
+
+    .create-button {
+        width: 228px;
+        height: 28px;
+        background: linear-gradient(360deg, #266469 -62.96%, #419295 96.3%);
+        border-radius: 3px;
+        font-size: 12px;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 28px;
+        cursor: pointer;
+        margin-top: 12px;
+    }
+
+    mgt-people-picker {
+        --accent-color: #3063B2;
+    }
+</style>
+<div class='light-dismiss-panel'>
+    <div class='flyout-panel'>
+        <div class='group-name-input-header'>Study group name</div>
+        <input class='group-name-input' type="text" placeholder="New Study Group" />
+        <hr />
+        <div class='group-description-input-header'>Study group description</div>
+        <input class='group-description-input' type="text" placeholder="New Study Group Description" />
+        <hr />
+        <div class="people-picker"> 
+        <div class='people-picker-input-header'>People Picker</div>
+            <mgt-people-picker class="people-picker"></mgt-people-picker>
+        </div>
+
+        <div class='create-button'>Create a Study Group</div>
+    </div>
+</div>
