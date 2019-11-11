@@ -6,7 +6,7 @@
  * -------------------------------------------------------------------------------------------
  */
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
-const { TeamsProvider } = require("@microsoft/mgt");
+const {TeamsProvider } = require("@microsoft/mgt");
 const BaseViewElement = require("./base-view");
 
 class TimelineViewElement extends BaseViewElement {

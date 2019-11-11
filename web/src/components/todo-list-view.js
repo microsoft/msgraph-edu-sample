@@ -14,7 +14,6 @@ class TodoListViewElement extends BaseViewElement {
   constructor() {
 
       super(TodoListViewElement.tagName);
-
       let createButton = this.shadowRoot.querySelector(".create-button");
       createButton.addEventListener("click", this.handleCreateClick.bind(this));
   }

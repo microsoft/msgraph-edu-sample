@@ -13,10 +13,10 @@ class AppHeaderViewElement extends BaseViewElement {
   constructor() {
       super(AppHeaderViewElement.tagName);
 
-      let hamburgerButton = this.shadowRoot.querySelector(".hamburger-button");
-      hamburgerButton.addEventListener(
+      let backArrow = this.shadowRoot.querySelector(".back-arrow");
+      backArrow.addEventListener(
           "click",
-          this.handleHamburgerClick.bind(this)
+          this.backArrowClick.bind(this)
       );
   }
 
@@ -27,7 +27,7 @@ class AppHeaderViewElement extends BaseViewElement {
    *
    * @memberof AppHeaderViewElement
    */
-  handleHamburgerClick() {
+  backArrowClick() {
       window.location.href = "./";
   }
 }

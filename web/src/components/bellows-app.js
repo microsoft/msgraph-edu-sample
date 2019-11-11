@@ -6,12 +6,14 @@
  * -------------------------------------------------------------------------------------------
  */
 const BaseViewElement = require("./base-view");
-const { Providers, MsalProvider, TeamsProvider } = require("@microsoft/mgt");
-const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
+const { Providers } = require("@microsoft/mgt");
 require("./drop-down-view");
 require("./main-view");
 require("./app-header-view");
 require("./teams-auth-view");
+
+const { PwaBuilder} = require("../services/pwabuilder-sw.js");
+const TeamsHelper = require("../services/teams-helper");
 
 class BellowsApp extends BaseViewElement {
   static tagName = "bellows-app";
@@ -28,36 +30,25 @@ class BellowsApp extends BaseViewElement {
       super(BellowsApp.tagName);
 
       //Define the scope of permissions for the application
-      let scopes = [
-          "user.read",
-          "people.read",
-          "user.readbasic.all",
-          "contacts.read",
-          "calendars.read",
-          "files.read",
-          "group.read.all",
-          "tasks.readwrite",
-          "Group.ReadWrite.All",
-          "EduRoster.ReadBasic",
-          "User.Read.All",
-          "User.ReadWrite.All"
-      ];
 
-      const clientId = process.env.CLIENT_ID;
+      let teamsHelper = new TeamsHelper();
+      teamsHelper.handleProviders();
 
-      if (TeamsProvider.isAvailable) {
-          TeamsProvider.microsoftTeamsLib = teams;
-          Providers.globalProvider = new TeamsProvider({
-              clientId: clientId,
-              authPopupUrl: "auth.html",
-              scopes: scopes
-          });
-      } else {
-          Providers.globalProvider = new MsalProvider({
-              clientId: clientId,
-              scopes: scopes
-          });
+      if ("serviceWorker" in navigator) {
+          if (navigator.serviceWorker.controller) {
+              console.log("[PWA Builder] active service worker found, no need to register");
+          } else {
+          // Register the service worker
+              navigator.serviceWorker
+                  .register(PwaBuilder, {
+                      scope: "./"
+                  })
+                  .then(function (reg) {
+                      console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+                  });
+          }
       }
+
       this.contentRoot = this.shadowRoot.getElementById("content-root");
       window.addEventListener("popstate", () => {
           window.location = location.origin;
