@@ -49,7 +49,6 @@ class BellowsApp extends BaseViewElement {
           }
       }
 
-      console.log("Bellows providers", Providers.globalProvider);
       this.contentRoot = this.shadowRoot.getElementById("content-root");
       window.addEventListener("popstate", () => {
           window.location = location.origin;

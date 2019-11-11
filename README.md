@@ -103,7 +103,26 @@ We provide a sample manifest located in the teams folder that can be used to ins
 In this section, I walk the reader through a few code snippets.
 ### Microsoft Graph Toolkit
 
- If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select collueges within an Azure tennant in a clean crossa platform interface. The below function showcases an integration between the People-Picker and Microsoft Teams. In this project we are sending a message to our colleagues when on creation of a new teams channel.
+ If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select collueges within an Azure tennant in a clean crossa platform interface.
+ 
+ Below is the HTML for the people picker that can be found in `create-study-group-view.html`. Note, the div wrapper is used for CSS styling.
+```
+        <div class="people-picker">
+            <mgt-people-picker class="people-picker"></mgt-people-picker>
+        </div>
+
+```
+
+Now, let's take a look at how to access the choosen people in the `create-study-group-view.js` file.
+
+```
+let people = document.body
+          .querySelector("create-study-group-view")
+          .shadowRoot.querySelector("mgt-people-picker").selectedPeople;
+```
+Now we can do some neat stuff with the chosen individuals.
+
+  The below function showcases an integration between the People-Picker and Microsoft Teams. In this project we are sending a message to our colleagues when on creation of a new teams channel.
 
 
 ``` 
@@ -138,7 +157,7 @@ async sendChatMessage(people, channelId, groupNameInput) {
 
 ### Microsoft Teams
 
-Teams integrations is another cool aspect of this project. For example, lets examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundemental to this apps architecture.
+Teams integrations is another cool aspect of this project. For example, lets examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundemental to this apps authorization flow.
 
 ```  
   handleProviders(){
@@ -160,12 +179,33 @@ Teams integrations is another cool aspect of this project. For example, lets exa
     }
 ```
 
-This code asks the Microsoft graph for permissions (i.e., scopes) for a given Azure tenant App Service identiefied via the client Id based on the context of the app's runtime. If the app is running within a Microsoft Teams tab the redirect callback url is set to the custom components "teams-auth-view.html", otherwise the Providers component from the Microsoft Graph Toolkit handles the authorization flow.
+If the app is running Microsoft Teams the Teams auth architechture is used, otherwise, the web app model is levraged.  
 
 
 ### PWA Builder
 
-The services folder is chalk full of Microsoft integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system. Microsoft's [PWA Builder](https://www.pwabuilder.com/) initatitive has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications! For instance, the [geolocation API](https://www.pwabuilder.com/feature/Use%20Geolocation) would help facilitate localization of an app's content. Programatic adaption of language content based on the users location is an important consideration in todays global learning envirnment.
+The services folder is chalk full of fantastic open source integrations, if we take a look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files, and download the app onto a machines operating system. The Open Source [PWA Builder](https://www.pwabuilder.com/) initatitive has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications!
+
+The below code gives an example of how to integrate a service worker into a babel/webpack project. Rather than mannually copy/pasting a service worker to the root of the project, we can add the PWA service worker logic to the `bellows-app.js` file. This ensures service worker benafits are bundled on build into the distribution instance of our app. 
+
+```
+
+      if ("serviceWorker" in navigator) {
+          if (navigator.serviceWorker.controller) {
+              console.log("[PWA Builder] active service worker found, no need to register");
+          } else {
+          // Register the service worker
+              navigator.serviceWorker
+                  .register(PwaBuilder, {
+                      scope: "./"
+                  })
+                  .then(function (reg) {
+                      console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+                  });
+          }
+      }
+
+```
 
 
 ### Web Components
