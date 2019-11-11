@@ -180,7 +180,7 @@ Teams integrations is another cool aspect of this project. For example, let’s 
     }
 ```
 
-If the app is running Microsoft Teams the Teams auth architecture is used, otherwise, the web app model is leveraged.  
+If the app is running Microsoft Teams the Teams auth architecture is used, otherwise, the web app Microsoft Graph auth flow is leveraged.  
 
 
 ### PWA Builder
