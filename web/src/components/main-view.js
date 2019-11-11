@@ -10,6 +10,7 @@ require("./timeline-view");
 require("./study-groups-view");
 const {Providers} = require("@microsoft/mgt");
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
+const TeamsHelper = require("../services/teams-helper");
 const BaseViewElement = require("./base-view");
 
 class MainViewElement extends BaseViewElement {
@@ -19,6 +20,8 @@ class MainViewElement extends BaseViewElement {
 
       super(MainViewElement.tagName);
       Notification.requestPermission();
+      let teamsHelper = new TeamsHelper();
+      teamsHelper.handleProviders();
    
   }
 

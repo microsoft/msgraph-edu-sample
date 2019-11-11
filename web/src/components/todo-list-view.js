@@ -6,8 +6,6 @@
  * -------------------------------------------------------------------------------------------
  */
 const BaseViewElement = require("./base-view");
-const TeamsHelper = require("../services/teams-helper");
-
 
 class TodoListViewElement extends BaseViewElement {
 
@@ -16,11 +14,6 @@ class TodoListViewElement extends BaseViewElement {
   constructor() {
 
       super(TodoListViewElement.tagName);
-
-
-      let teamsHelper = new TeamsHelper();
-      teamsHelper.handleProviders();
-
       let createButton = this.shadowRoot.querySelector(".create-button");
       createButton.addEventListener("click", this.handleCreateClick.bind(this));
   }
