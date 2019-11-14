@@ -5,6 +5,8 @@
         contain: content;
         font-family: 'Segoe UI';
         background-color: #EEEEEE;
+        width: 100%;
+
         /*background-color: #F8FAFA;*/
     }
 
@@ -124,21 +126,13 @@
         overflow: hidden;
     }
 
-    .score-progress {
-        width: 960px;
-    }
-
-    .score-progress-2 {
-        max-width: 864px;
-        width: 100%;
-        display: none;
-    }
 
     @media only screen and (max-width: 1572px) {
 
         .content-panel>div,
         .header-root {
             width: 864px;
+            overflow-y:hidden;
         }
 
         .timeline,
@@ -153,13 +147,6 @@
             align-items: baseline;
         }
 
-        .score-progress {
-            display: none;
-        }
-
-        .score-progress-2 {
-            display: initial;
-        }
     }
 
     @media only screen and (max-width: 952px) {
@@ -178,6 +165,7 @@
             height: auto;
             margin-top: 18px;
             margin-bottom: 12px;
+            overflow-y:auto;
         }
 
         .class-metadata,

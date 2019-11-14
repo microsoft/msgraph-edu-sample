@@ -2,7 +2,7 @@
 
 const CACHE = "pwabuilder-precache";
 const precacheFiles = [
-  /* Add an array of files to precache for your app */
+  '/dist/bundle.js'
 ];
 
 self.addEventListener("install", function (event) {

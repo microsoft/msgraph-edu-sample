@@ -20,8 +20,6 @@ class AppHeaderViewElement extends BaseViewElement {
       );
   }
 
-
-
   /**
    * Redirect to origin landing page.
    *

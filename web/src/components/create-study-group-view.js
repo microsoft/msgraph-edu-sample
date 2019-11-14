@@ -29,15 +29,6 @@ class CreateStudyGroupViewElement extends BaseViewElement {
 
       let createButton = this.shadowRoot.querySelector(".create-button");
       createButton.addEventListener("click", this.handleCreateClicked.bind(this));
-
-      let groupNameInput = this.shadowRoot.querySelector(".group-name-input");
-      groupNameInput.value = "New Study Group";
-
-      let groupDescriptionInput = this.shadowRoot.querySelector(
-          ".group-description-input"
-      );
-
-      groupDescriptionInput.value = "New Study group description";
   }
 
   /**
