@@ -5,23 +5,24 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-const CreateStudyGroupViewElement = require("./create-study-group-view");
-const BaseViewElement = require("./base-view");
-const { Providers }  =  require("@microsoft/mgt");
-require("../components/study-group-item");
+import { Providers } from '@microsoft/mgt';
+import { Component } from '../component';
+import { CreateStudyGroupFlyout } from '..';
 
-class StudyGroupsViewElement extends BaseViewElement {
+export class StudyGroups extends Component {
+    
+    protected getTemplate(): HTMLTemplateElement {
+        const template = document.createElement('template');
+        template.innerHTML = require('./study-groups.html');
+        return template;
+    }
 
-    static tagName ="study-groups-view";
     _studyGroupItems = [];
 
-    constructor() {
-        
-        super(StudyGroupsViewElement.tagName);
-        this.createButton = this.shadowRoot.querySelector(".create-button");
-        this.createButton.addEventListener("click", this.handleCreateClick.bind(this));
-    }
     async connectedCallback() {
+
+        this.createButton = this.shadowRoot!.querySelector(".create-button");
+        this.createButton.addEventListener("click", this.handleCreateClick.bind(this));
 
         this.fetchChannels();
     }
@@ -31,16 +32,16 @@ class StudyGroupsViewElement extends BaseViewElement {
 
         if (this._studyGroupItems && this._studyGroupItems.length > 0) {
 
-            let itemsContainer = this.shadowRoot.querySelector(".items-container");
-            while (itemsContainer.hasChildNodes()) {
+            let itemsContainer = this.shadowRoot!.querySelector(".items-container");
+            while (itemsContainer && itemsContainer.lastChild) {
 
-                itemsContainer.removeChild(itemsContainer.lastChild);
+                itemsContainer!.removeChild(itemsContainer.lastChild);
             }
 
             for (let i = 0; i < this._studyGroupItems.length; i++) {
 
                 let item = this._studyGroupItems[i];
-                itemsContainer.appendChild(item);
+                itemsContainer!.appendChild(item);
             }
         }
     }
@@ -60,7 +61,7 @@ class StudyGroupsViewElement extends BaseViewElement {
         let x = rect.left + left;
         let y = rect.bottom + top;
 
-        let createStudyGroupView = new CreateStudyGroupViewElement();
+        let createStudyGroupView = new CreateStudyGroupFlyout();
         createStudyGroupView.addEventListener("channelCreated", this.refreshChannels.bind(this));
         createStudyGroupView.showAt(x, y);
     }
@@ -81,7 +82,7 @@ class StudyGroupsViewElement extends BaseViewElement {
         item.onclick = function () {parent.open(content["webUrl"]);};
        
         this._studyGroupItems.push(item);
-        let itemsContainer = this.shadowRoot.querySelector(".items-container");
+        let itemsContainer = this.shadowRoot!.querySelector(".items-container");
         itemsContainer.appendChild(item);
     }
 
@@ -111,5 +112,4 @@ class StudyGroupsViewElement extends BaseViewElement {
     }
 }
 
-customElements.define(StudyGroupsViewElement.tagName, StudyGroupsViewElement);
-module.exports = StudyGroupsViewElement;
+customElements.define('study-groups-view', StudyGroupsView);

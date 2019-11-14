@@ -8,7 +8,7 @@
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
 const { Providers, TeamsProvider, MsalProvider} = require("@microsoft/mgt");
 
-class TeamsHelper {
+export class TeamsHelper {
 
     _scopes = [
         "user.read",
@@ -151,4 +151,3 @@ class TeamsHelper {
         }
     }
 }
-module.exports = TeamsHelper;

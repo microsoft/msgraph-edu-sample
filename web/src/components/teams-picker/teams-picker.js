@@ -1,22 +1,18 @@
-  
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-require("../assets/background.png");
-const BaseViewElement = require("./base-view");
-const {Providers, TeamsProvider} = require("@microsoft/mgt");
+import { Component } from "../component";
+import { Providers, TeamsProvider } from '@microsoft/mgt';
+//require("../assets/background.png");
 
-
-class DropDownViewElement extends BaseViewElement {
-
-  static tagName = "drop-down-view";
+export class TeamsPicker extends Component {
 
   constructor() {
 
-      super(DropDownViewElement.tagName);
+      super();
 
       if(TeamsProvider.isAvailable){
           let loginButton = this.shadowRoot.querySelector(".login-component");
@@ -126,5 +122,4 @@ class DropDownViewElement extends BaseViewElement {
       }
   }
 }
-customElements.define(DropDownViewElement.tagName, DropDownViewElement);
-module.exports = DropDownViewElement;
+customElements.define('teams-picker', TeamsPicker);

@@ -1,29 +1,27 @@
-  
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
+import { Component } from "../component";
+
+  
+
 const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
-const BaseViewElement = require("./base-view");
+const BaseViewElement = require("../../base-view");
 const { TeamsProvider } = require("@microsoft/mgt");
 
-class StudyGroupItemElement extends BaseViewElement {
+export class StudyGroupItem extends Component {
+    
+    protected getTemplate(): HTMLTemplateElement {
+        
+    }
 
     static get observedAttributes() {
 
         return ["display-name", "description"];
     }
-
-  static tagName = "study-group-item";
-
-  constructor() {
-
-      super(StudyGroupItemElement.tagName);
-  }
-
-
 
   /**
    * Populate an element with teams url and content.
@@ -111,5 +109,4 @@ class StudyGroupItemElement extends BaseViewElement {
   }
 }
 
-customElements.define(StudyGroupItemElement.tagName, StudyGroupItemElement);
-module.exports = StudyGroupItemElement;
+customElements.define('study-group-item', StudyGroupItem);

@@ -91,6 +91,7 @@ package-lock.json
 
 #Dist folder
 dist/
+lib/
 
 #lint config
 .eslintrc.json
