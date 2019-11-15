@@ -4,20 +4,18 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { View } from "../view";
-import { TeamsProvider } from '@microsoft/mgt';
-import teams from '@microsoft/teams-js';
+import { ViewComponent } from "../view-component";
+import { TeamsHelper } from '../../helpers';
 
-export class TeamsAuthView extends View {
+export class TeamsAuthView extends ViewComponent {
 
-    constructor() {
+    load() {
 
-        super();
-        TeamsProvider.microsoftTeamsLib = teams;
-        TeamsProvider.handleAuth();
+        TeamsHelper.handleAuth();
     }
 
     protected getTemplate(): HTMLTemplateElement {
+
         const template = document.createElement('template');
         template.innerHTML = require('./teams-auth-view.html');
         return template;

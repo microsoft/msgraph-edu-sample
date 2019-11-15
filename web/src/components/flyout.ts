@@ -1,9 +1,19 @@
+/**
+ * -------------------------------------------------------------------------------------------
+ * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
+ * See License in the project root for license information.
+ * -------------------------------------------------------------------------------------------
+ */
 import { Component } from "./component";
 
 export abstract class Flyout extends Component {
 
+    connectedCallback() {
 
-    
+        const lightDismissPanel = this.shadowRoot!.querySelector(".light-dismiss-panel");
+        lightDismissPanel!.addEventListener("pointerdown", (e) => this.handleRootClick(e));
+    }
+
     /**
      * Show modal at x y coordinate of a screen.
      *
@@ -11,14 +21,16 @@ export abstract class Flyout extends Component {
      * @param {*} y axis position of screen
      * @memberof CreateStudyGroupViewElement
      */
-    showAt(x, y) {
+    showAt(x: number, y: number) {
+
         document.body.appendChild(this);
 
+        let flyoutPanel = <HTMLElement>this.shadowRoot!.querySelector(".flyout-panel");
         let screenWidth = document.documentElement.scrollWidth;
-        x = Math.min(x, screenWidth - this.flyoutPanel.clientWidth);
+        x = Math.min(x, screenWidth - flyoutPanel!.clientWidth);
 
-        this.flyoutPanel.style.marginLeft = `${x}px`;
-        this.flyoutPanel.style.marginTop = `${y}px`;
+        flyoutPanel!.style.marginLeft = `${x}px`;
+        flyoutPanel!.style.marginTop = `${y}px`;
     }
 
     /**
@@ -27,9 +39,20 @@ export abstract class Flyout extends Component {
      * @param {*} e
      * @memberof CreateStudyGroupViewElement
      */
-    handleRootClick(e: any) {
-        if (e.srcElement == this._lightDismissPanel) {
-            this.remove();
+    handleRootClick(e: Event) {
+
+        const lightDismissPanel = this.shadowRoot!.querySelector(".light-dismiss-panel");
+        if (e.srcElement == lightDismissPanel) {
+
+            this.hide();
         }
+    }
+
+    /**
+     * Hide the flyout
+     */
+    hide() {
+
+        this.remove();
     }
 }

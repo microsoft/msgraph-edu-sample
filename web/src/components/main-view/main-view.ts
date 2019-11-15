@@ -1,4 +1,3 @@
-  
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
@@ -7,32 +6,15 @@
  */
 import teams from '@microsoft/teams-js';
 import { Providers, IProvider, MgtPeople } from '@microsoft/mgt';
-import { View } from '../view';
-import { TeamsHelper } from '../../../helpers/teams-helper';
+import { ViewComponent } from '../view-component';
 
-export class MainView extends View {
+export class MainView extends ViewComponent {
     
-    constructor() {
-
-        super();
-        
-        Notification.requestPermission();
-        let teamsHelper = new TeamsHelper();
-        teamsHelper.handleProviders();
-    
-    }
-
-    protected getTemplate(): HTMLTemplateElement {
-        const template = document.createElement('template');
-        template.innerHTML = require('./main-view.html');
-        return template;
-    }
-
     /**
      * Populate course information.
      *
      * @param {*} params
-     * @memberof MainViewElement
+     * @memberof MainView
      */
     async populateTeamInfo(params: any) {
 
@@ -78,7 +60,6 @@ export class MainView extends View {
 
             let teacherCard = this.shadowRoot!.querySelector('.teacher-person');
             teacherCard!.setAttribute('person-query', teacher['userPrincipalName']);
-
     
             let mgtPeople = <MgtPeople>this.shadowRoot!.querySelector('.team-members mgt-people');
             mgtPeople!.groupId = params.groupId;
@@ -103,8 +84,6 @@ export class MainView extends View {
         let askTeacherButton = this.shadowRoot!.querySelector('.ask-teacher-button');
         askTeacherButton!.addEventListener('click', (e) => this.handleAskTeacherClick());
     }
-
-    unload() {}
 
     handleAskFriendClick() {
         
@@ -165,6 +144,13 @@ export class MainView extends View {
             clearTimeout(t);
             teams.executeDeepLink(createChatUrl);
         });
+    }
+
+    protected getTemplate(): HTMLTemplateElement {
+
+        const template = document.createElement('template');
+        template.innerHTML = require('./main-view.html');
+        return template;
     }
 }
 

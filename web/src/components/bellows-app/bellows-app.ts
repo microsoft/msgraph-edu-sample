@@ -1,141 +1,34 @@
-import { Component } from "../component";
-
-  
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-const { Providers } = require("@microsoft/mgt");
-
-const { PwaBuilder} = require("../../services/pwabuilder-sw.js");
-const TeamsHelper = require("../../services/teams-helper");
+import { Component, ViewHost } from '..';
+import { PwaBuilderHelper, TeamsHelper, NavigationHelper } from '../../helpers/';
 
 export class BellowsApp extends Component {
     
-    protected getTemplate(): HTMLTemplateElement {
-        const template = document.createElement('template');
-        template.innerHTML = require('./bellows-app.html');
-        return template;
-    }
-    
-    currentView = null;
-    contentRoot = null;
-
     constructor() {
         super();
 
-        //Define the scope of permissions for the application
-
-        let teamsHelper = new TeamsHelper();
-        teamsHelper.handleProviders();
-
-        if ("serviceWorker" in navigator) {
-            
-            if (navigator.serviceWorker.controller) {
-                console.log("[PWA Builder] active service worker found, no need to register");
-            } 
-            else {
-                // Register the service worker
-                navigator.serviceWorker
-                    .register(PwaBuilder, {
-                        scope: "./"
-                    })
-                    .then(function (reg) {
-                        console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
-                    });
-            }
-        }
-
-        this.contentRoot = this.shadowRoot.getElementById("content-root");
-        window.addEventListener("popstate", () => {
-            window.location = location.origin;
-        });
+        Notification.requestPermission();
+        TeamsHelper.initGlobalProvider();
+        PwaBuilderHelper.initServiceWorkerAsync();
+        NavigationHelper.initPopStateHandler();
     }
 
-    /**
-     * @param {JSON} parameters Json object of values that will be injected into the url query
-     * @param {String} title Title of teh route that will be loaded.  
-     * 
-     */
-    updateParameterState(parameters, title) {
-        let keys = Object.keys(parameters);
-        let values = Object.values(parameters);
+    connectedCallback() {
 
-        let updatedUrl = location.origin + "?";
-        for (let i = 0; i < keys.length; i++) {
-            if (i == 0) {
-                updatedUrl = updatedUrl + keys[i] + "=" + values[i];
-            } else {
-                updatedUrl = updatedUrl + "&" + keys[i] + "=" + values[i];
-            }
-        }
-
-        window.history.pushState({}, title, updatedUrl);
+        const viewHost = <ViewHost>this.shadowRoot!.querySelector('view-host');
+        NavigationHelper.setActiveViewHost(viewHost);
     }
-
-    /**
-     * Initialize parameter values. THe canonical landing values are operationalized to -1 for simplicity.
-     * One can add additional query values here to initialize them.
-     */
-    initSignInFlow(viewName) {
-        let parameters = { groupId: -1, classId: -1 };
-        let view = document.createElement(viewName);
-        this.navigate(view, parameters);
-    }
-
-
-    /**
-     * Router logic that handles state and parameter changes
-     *
-     * @param {Web Component} view Dom element to route the UI
-     * @param {JSON} parameters Json object that is injected into the url query
-     */
-    navigate(view, parameters) {
-        setTimeout(() => {
-            if (this.currentView && this.currentView.unload) {
-                this.currentView.unload();
-            }
-
-            let title = "Bellows App";
-            let initView = "drop-down-view";
-
-            if (parameters !== undefined) {
-                let parameterKeys = Object.keys(parameters);
-                let parametersValues = Object.values(parameters);
-                //Check to see if parameters have been initialized to -1
-                let parametersCheck = parametersValues.filter(value => value === -1);
-                if (parametersCheck.length != parameterKeys.length) {
-                    //36 is the length of a id token for both classes and groups, and most Azure resources.
-            
-                    parametersCheck = parametersValues.filter(
-                        value => value.length === 36
-                    );
-                    //If a developer wants to add additional routes this code would need to be abstracted further.
-                    if (parametersCheck.length != parameterKeys.length) {
-                        alert("One of the values was not selected, please fix that.");
-                        return null;
-                    } else {
-                        this.updateParameterState(parameters, title);
-                    }
-                }
-            } else {
-                this.initSignInFlow(initView);
-                return null;
-            }
-
-            this.currentView = view;
-            while (this.contentRoot.firstChild && this.contentRoot.firstChild !== view) {
-                this.contentRoot.removeChild(this.contentRoot.firstChild);
-            }
-
-            this.contentRoot.appendChild(this.currentView);
-
-            if (this.currentView.initialize) {
-                this.currentView.initialize(parameters);
-            }
-        }, 0);
+    
+    protected getTemplate(): HTMLTemplateElement {
+        
+        const template = document.createElement('template');
+        template.innerHTML = require('./bellows-app.html');
+        return template;
     }
 }
 

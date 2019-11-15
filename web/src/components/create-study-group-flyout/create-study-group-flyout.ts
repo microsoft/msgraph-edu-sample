@@ -4,37 +4,24 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Providers } from '@microsoft/mgt';
+import { Providers, MgtPeoplePicker } from '@microsoft/mgt';
 import { Flyout } from '../flyout';
 import { TeamsHelper } from '../../helpers';
 
 export class CreateStudyGroupFlyout extends Flyout {
     
-    protected getTemplate(): HTMLTemplateElement {
-        const template = document.createElement('template');
-        template.innerHTML = require('./create-study-group-flyout.html');
-        return template;
-    }
+    connectedCallback() {
 
-    constructor() {
-        super();
+        super.connectedCallback();
 
-        this.flyoutPanel = this.shadowRoot.querySelector(".flyout-panel");
+        const createButton = this.shadowRoot!.querySelector(".create-button");
+        createButton!.addEventListener("click", (e) => this.handleCreateClicked());
 
-        this._lightDismissPanel = this.shadowRoot.querySelector(".light-dismiss-panel");
-        this._lightDismissPanel.addEventListener("pointerdown", this.handleRootClick.bind(this));
+        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-name-input");
+        groupNameInput!.value = "New Study Group";
 
-        let createButton = this.shadowRoot.querySelector(".create-button");
-        createButton.addEventListener("click", this.handleCreateClicked.bind(this));
-
-        let groupNameInput = this.shadowRoot.querySelector(".group-name-input");
-        groupNameInput.value = "New Study Group";
-
-        let groupDescriptionInput = this.shadowRoot.querySelector(
-            ".group-description-input"
-        );
-
-        groupDescriptionInput.value = "New Study group description";
+        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-description-input");
+        groupDescriptionInput!.value = "New Study group description";
     }
 
     /**
@@ -43,8 +30,9 @@ export class CreateStudyGroupFlyout extends Flyout {
      * @param {*} channel
      * @memberof CreateStudyGroupViewElement
      */
-    createEvent(channel) {
-        let event = new CustomEvent("channelCreated", {
+    createEvent(channel: { displayName: string, description: string, webUrl: string }) {
+        
+        const event = new CustomEvent("channelCreated", {
             detail: channel
         });
 
@@ -57,41 +45,45 @@ export class CreateStudyGroupFlyout extends Flyout {
      * @memberof CreateStudyGroupViewElement
      */
     async handleCreateClicked() {
-        let groupNameInput = this.shadowRoot.querySelector(".group-name-input");
-        let groupDescriptionInput = this.shadowRoot.querySelector(
-            ".group-description-input"
-        );
 
-        let people = document.body
-            .querySelector("create-study-group-view")
-            .shadowRoot.querySelector("mgt-people-picker").selectedPeople;
+        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-name-input");
+        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-description-input");
+        const peoplePicker = <MgtPeoplePicker>this.shadowRoot!.querySelector("mgt-people-picker");
 
-        let provider = Providers.globalProvider;
-        let graphClient = provider.graph.client;
+        const groupName = groupNameInput.value;
+        const groupDescription = groupDescriptionInput.value;
+        const people = peoplePicker!.selectedPeople;
         let channel = {
-            displayName: groupNameInput.value,
-            description: groupDescriptionInput.value
+            displayName: groupName,
+            description: groupDescription
         };
-        let teamsHelper = new TeamsHelper();
 
-        let url = new URLSearchParams(location.search);
+        const url = new URLSearchParams(location.search);
+        const groupId = url.get("groupId");
 
-        let createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${url.get(
-            "groupId"
-        )}/channels`;
-        let result = await graphClient
-            .api(createNewChannelUrl).post(channel);
+        const createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${groupId}/channels`;
+        const graphClient = Providers.globalProvider.graph.client;
+        const result = await graphClient.api(createNewChannelUrl).post(channel);
+        
+        const channelId = result["id"];
 
-        let  channelId = result["id"];
-        channel["webUrl"] = result["webUrl"];
-
-        this.createEvent(channel);
-        teamsHelper.handleNotification(groupNameInput.value, channelId);
+        // Send an event with the channel object and webUrl appended on.
+        this.createEvent(Object.assign(channel, { webUrl: result["webUrl"] }));
+        TeamsHelper.handleNotification(groupNameInput.value, channelId);
 
         if (channelId) {
-            teamsHelper.sendChatMessage(people, channelId, groupNameInput.value);
+
+            TeamsHelper.sendChatMessage(people, channelId, groupName);
         }
-        this.remove();
+
+        this.hide();
+    }    
+    
+    protected getTemplate(): HTMLTemplateElement {
+        
+        const template = document.createElement('template');
+        template.innerHTML = require('./create-study-group-flyout.html');
+        return template;
     }
 }
 

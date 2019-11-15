@@ -1,16 +1,18 @@
-  
 /**
  * -------------------------------------------------------------------------------------------
  * Copyright (c) Microsoft Corporation.  All Rights Reserved.  Licensed under the MIT License.
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
-const { Providers, TeamsProvider, MsalProvider} = require("@microsoft/mgt");
+import teams from '@microsoft/teams-js';
+import { Providers, TeamsProvider, MsalProvider, MgtPeople } from '@microsoft/mgt';
+
+// TODO: Consider removing. Possibly uneccesary, need to test.
+TeamsProvider.microsoftTeamsLib = teams;
 
 export class TeamsHelper {
 
-    _scopes = [
+    private static _scopes = [
         "user.read",
         "people.read",
         "user.readbasic.all",
@@ -24,26 +26,31 @@ export class TeamsHelper {
         "User.Read.All",
         "User.ReadWrite.All"
     ];
-    constructor() {}
-    
-
 
     /**
      * Handles authentication for various providers 
      *
      * @memberof TeamsHelper
      */
-    handleProviders(){
+    public static initGlobalProvider(){
 
+        // TODO: Decouple const values from process.env
         const clientId = process.env.CLIENT_ID;
+        if (!clientId) {
+            throw new Error('Missing clientId value in env');
+        }
+
         if (TeamsProvider.isAvailable) {
+
             TeamsProvider.microsoftTeamsLib = teams;
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
                 authPopupUrl: "teams-auth-view.html",
                 scopes: this._scopes
             });
-        } else {
+        } 
+        else {
+
             Providers.globalProvider = new MsalProvider({
                 clientId: clientId,
                 scopes: this._scopes
@@ -51,73 +58,59 @@ export class TeamsHelper {
         }
     }
 
-    /**
-   * Send a notification for creation of a channel.
-   *
-   * @param {String} groupNameInput
-   * @param {bool} flag indicates success or failure of Http Post.
-   */
+    public static handleAuth() {
 
-    async handleNotification(groupNameInput, flag) {
+        TeamsProvider.handleAuth();
+    }
+
+    /**
+     * Send a notification for creation of a channel.
+     *
+     * @param {String} groupNameInput
+     * @param {bool} flag indicates success or failure of Http Post.
+     */
+    public static async handleNotification(groupNameInput: string, flag: boolean) {
+
+        const sendNotification = (granted: boolean) => {
+
+            new Notification(granted
+                ? `Channel ${groupNameInput} was successfully created`
+                : `Channel ${groupNameInput} was not created since a channel with that name already exists`);
+        }
 
         let permission = Notification.permission;
-        if (flag) {
-            if (permission === "granted") {
+        if (permission === 'granted') {
 
-                new Notification(
-                    `Channel ${groupNameInput} was successfully created`
-                );
-            } else if (permission !== "denied") {
+            sendNotification(flag);
+        }
+        else if (permission !== 'denied') {
 
-                Notification.requestPermission(function(permission) {
-
-                    if (permission === "granted") {
-
-                        new Notification(
-                            `Channel ${groupNameInput} was successfully created`
-                        );
-                    }
-                });
-            }
-        } else {
-            if (permission === "granted") {
-
-                new Notification(
-                    `Channel ${groupNameInput} was not created since a channel with that name already exists`
-                );
-            } else if (permission !== "denied") {
-
-                Notification.requestPermission(function(permission) {
-
-                    if (permission === "granted") {
-
-                        new Notification(
-                            `Channel ${groupNameInput} was not created since a channel with that name already exists`
-                        );
-                    }
-                });
-            }
+            Notification.requestPermission((p) => sendNotification(p === 'granted'));
         }
     }
 
     /**
-   * Send a chat message to selected users for creation of a channel.
-   *
-   * @param {mgt-people-picker} people selected individuals
-   * @param {String} ChannelId Id of the Microsoft teams channel
-   * @param {String} groupNameInput Title of the study group created
-   */
-    async sendChatMessage(people, channelId, groupNameInput) {
-        let provider = Providers.globalProvider;
-        let graphClient = provider.graph.client;
-        let mentionsJsonArray = [];
-        let contentString = "";
-        let url = new URLSearchParams(location.search);
+     * Send a chat message to selected users for creation of a channel.
+     *
+     * @param {mgt-people-picker} people selected individuals
+     * @param {String} ChannelId Id of the Microsoft teams channel
+     * @param {String} groupNameInput Title of the study group created
+     */
+    public static async sendChatMessage(people: Array<any>, channelId: string, groupNameInput: string) {
+
+        const provider = Providers.globalProvider;
+        const graphClient = provider.graph.client;
+        const url = new URLSearchParams(location.search);
+        const groupId = url.get("groupId");
+
         try {
+
+            let mentionsJsonArray = [];
+            let contentString = '';
 
             for (let i = 0; i < people.length; i++) {
 
-                let mentionInstance = {
+                mentionsJsonArray.push({
                     id: i,
                     mentionText: people[i]["displayName"],
                     mentioned: {
@@ -127,14 +120,13 @@ export class TeamsHelper {
                             userIdentityType: "aadUser"
                         }
                     }
-                };
-                mentionsJsonArray.push(mentionInstance);
+                });
+
                 contentString += `<at id=\"${i}\">${people[i]["displayName"]}</at>, `;
             }
-            let messageUrl = `teams/${url.get(
-                "groupId"
-            )}/channels/${channelId}/messages`;
-            let messageContent = {
+
+            const messageUrl = `teams/${groupId}/channels/${channelId}/messages`;
+            const messageContent = {
                 body: {
                     contentType: "html",
                     content: `Hi, ${contentString} I created this group to help us better communicate about ${groupNameInput}`
@@ -142,11 +134,13 @@ export class TeamsHelper {
                 mentions: mentionsJsonArray
             };
 
-            let sendIt = await graphClient
+            await graphClient
                 .api(messageUrl)
                 .version("beta")
                 .post(messageContent);
-        } catch (error) {
+        } 
+        catch (error) {
+
             console.log(error);
         }
     }
