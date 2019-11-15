@@ -6,7 +6,7 @@
  */
 import { Providers, MgtPeoplePicker } from '@microsoft/mgt';
 import { Flyout } from '../flyout';
-import { TeamsHelper } from '../../helpers';
+import { TeamsHelper, SessionHelper } from '../../helpers';
 
 export class CreateStudyGroupFlyout extends Flyout {
     
@@ -14,14 +14,14 @@ export class CreateStudyGroupFlyout extends Flyout {
 
         super.connectedCallback();
 
-        const createButton = this.shadowRoot!.querySelector(".create-button");
-        createButton!.addEventListener("click", (e) => this.handleCreateClicked());
+        const createButton = this.shadowRoot!.querySelector('.create-button');
+        createButton!.addEventListener('click', (e) => this.handleCreateClicked());
 
-        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-name-input");
-        groupNameInput!.value = "New Study Group";
+        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-name-input');
+        groupNameInput!.value = 'New Study Group';
 
-        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-description-input");
-        groupDescriptionInput!.value = "New Study group description";
+        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-description-input');
+        groupDescriptionInput!.value = 'New Study group description';
     }
 
     /**
@@ -32,7 +32,7 @@ export class CreateStudyGroupFlyout extends Flyout {
      */
     createEvent(channel: { displayName: string, description: string, webUrl: string }) {
         
-        const event = new CustomEvent("channelCreated", {
+        const event = new CustomEvent('channelCreated', {
             detail: channel
         });
 
@@ -46,9 +46,9 @@ export class CreateStudyGroupFlyout extends Flyout {
      */
     async handleCreateClicked() {
 
-        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-name-input");
-        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector(".group-description-input");
-        const peoplePicker = <MgtPeoplePicker>this.shadowRoot!.querySelector("mgt-people-picker");
+        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-name-input');
+        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-description-input');
+        const peoplePicker = <MgtPeoplePicker>this.shadowRoot!.querySelector('mgt-people-picker');
 
         const groupName = groupNameInput.value;
         const groupDescription = groupDescriptionInput.value;
@@ -58,17 +58,15 @@ export class CreateStudyGroupFlyout extends Flyout {
             description: groupDescription
         };
 
-        const url = new URLSearchParams(location.search);
-        const groupId = url.get("groupId");
-
+        const groupId = SessionHelper.get<string>('groupId');
         const createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${groupId}/channels`;
         const graphClient = Providers.globalProvider.graph.client;
         const result = await graphClient.api(createNewChannelUrl).post(channel);
         
-        const channelId = result["id"];
+        const channelId = result['id'];
 
         // Send an event with the channel object and webUrl appended on.
-        this.createEvent(Object.assign(channel, { webUrl: result["webUrl"] }));
+        this.createEvent(Object.assign(channel, { webUrl: result['webUrl'] }));
         TeamsHelper.handleNotification(groupNameInput.value, channelId);
 
         if (channelId) {

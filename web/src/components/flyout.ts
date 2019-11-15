@@ -4,14 +4,14 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Component } from "./component";
+import { Component } from './component';
 
 export abstract class Flyout extends Component {
 
     connectedCallback() {
 
-        const lightDismissPanel = this.shadowRoot!.querySelector(".light-dismiss-panel");
-        lightDismissPanel!.addEventListener("pointerdown", (e) => this.handleRootClick(e));
+        const lightDismissPanel = this.shadowRoot!.querySelector('.light-dismiss-panel');
+        lightDismissPanel!.addEventListener('pointerdown', (e) => this.handleRootClick(e));
     }
 
     /**
@@ -25,7 +25,7 @@ export abstract class Flyout extends Component {
 
         document.body.appendChild(this);
 
-        let flyoutPanel = <HTMLElement>this.shadowRoot!.querySelector(".flyout-panel");
+        let flyoutPanel = <HTMLElement>this.shadowRoot!.querySelector('.flyout-panel');
         let screenWidth = document.documentElement.scrollWidth;
         x = Math.min(x, screenWidth - flyoutPanel!.clientWidth);
 
@@ -41,7 +41,7 @@ export abstract class Flyout extends Component {
      */
     handleRootClick(e: Event) {
 
-        const lightDismissPanel = this.shadowRoot!.querySelector(".light-dismiss-panel");
+        const lightDismissPanel = this.shadowRoot!.querySelector('.light-dismiss-panel');
         if (e.srcElement == lightDismissPanel) {
 
             this.hide();

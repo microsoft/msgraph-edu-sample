@@ -5,9 +5,10 @@
  * -------------------------------------------------------------------------------------------
  */
 import { Providers, TeamsProvider } from '@microsoft/mgt';
-import { NavigationHelper } from '../../helpers';
+import { NavigationHelper, SessionHelper } from '../../helpers';
 import { ViewComponent } from '..';
 
+// TODO: Remove the hardcoded styles in this class
 export class SignInView extends ViewComponent {
     
     connectedCallback() {
@@ -38,12 +39,13 @@ export class SignInView extends ViewComponent {
         let groupId = groupDropDown!.options[groupDropDown.selectedIndex].value;
         let classId = classDropDown!.options[classDropDown.selectedIndex].value;
         
-        /*
-        let url = new URL(window.location.href);
-        let params = new URLSearchParams(url);
-        params.append('classId',classId);
-        params.append('groupId',groupId);
-        */
+        if (!groupId || !classId) {
+
+            return;
+        }
+
+        SessionHelper.set('classId', classId);
+        SessionHelper.set('groupId', groupId);
 
         let view = <ViewComponent>document.createElement('main-view');
         NavigationHelper.navigate(view, {
@@ -124,4 +126,5 @@ export class SignInView extends ViewComponent {
         return template;
     }
 }
+
 customElements.define('sign-in-view', SignInView);

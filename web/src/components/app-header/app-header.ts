@@ -4,21 +4,22 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Component } from "../component";
+import { Component } from '../component';
+import { NavigationHelper } from '../../helpers';
+import { SignInView } from '../sign-in-view/sign-in-view';
 
 export class AppHeader extends Component {
     
     connectedCallback() {
 
-        let backArrow = this.shadowRoot!.querySelector(".back-arrow");
-        backArrow!.addEventListener("click", this.backArrowClick);
+        let backArrow = this.shadowRoot!.querySelector('.back-arrow');
+        backArrow!.addEventListener('click', this.backArrowClick);
     }
 
-    // Redirect to origin landing page.
     private backArrowClick() {
 
-        // TODO: Adjust this to use the NavigationHelper instead.
-        window.location.href = "./";
+        const view = <SignInView>document.createElement('sign-in-view');
+        NavigationHelper.navigate(view);
     }
 
     protected getTemplate(): HTMLTemplateElement  {

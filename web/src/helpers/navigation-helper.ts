@@ -45,7 +45,7 @@ export class NavigationHelper {
      * @param viewKey = the tagname for the target view
      * @param parameter = data to load the target view with
      */
-    public static navigate(view: ViewComponent, parameter: any): void {
+    public static navigate(view: ViewComponent, parameter: any = undefined): void {
 
         // Timeout is used to avoid timing issues
         // TODO: Reevaluate whether the timeout is required or not.

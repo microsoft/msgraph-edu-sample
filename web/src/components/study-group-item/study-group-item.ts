@@ -4,109 +4,103 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Component } from "../component";
-
-  
-
-const teams = require("@microsoft/teams-js/dist/MicrosoftTeams");
-const BaseViewElement = require("../../base-view");
-const { TeamsProvider } = require("@microsoft/mgt");
+import { Component } from '../component';
+import { TeamsHelper } from '../../helpers';
 
 export class StudyGroupItem extends Component {
-    
-    protected getTemplate(): HTMLTemplateElement {
-        
-    }
 
     static get observedAttributes() {
 
-        return ["display-name", "description"];
+        return ['display-name', 'description'];
     }
 
-  /**
-   * Populate an element with teams url and content.
-   *
-   * @param {*} data
-   * @memberof StudyGroupItemElement
-   */
-  render(data) {
+    /**
+     * Populate an element with teams url and content.
+     *
+     * @param {*} data
+     * @memberof StudyGroupItemElement
+     */
+    render(data: { displayName?: string | null | undefined, description?: string | null | undefined, webUrl?: string | null | undefined}) {
 
-      if (data.displayName) {
+        if (data.displayName) {
 
-          let displayNameElem = this.shadowRoot.querySelector(".display-name");
-          displayNameElem.textContent = data.displayName;
-      }
+            const displayNameElem = this.shadowRoot!.querySelector('.display-name');
+            displayNameElem!.textContent = data.displayName;
+        }
 
-      if (data.description) {
+        if (data.description) {
 
-          let descriptionElem = this.shadowRoot.querySelector(".description");
-          descriptionElem.textContent = data.description;
-      }
+            const descriptionElem = this.shadowRoot!.querySelector('.description');
+            descriptionElem!.textContent = data.description;
+        }
 
-      if (data.webUrl) {
+        if (data.webUrl) {
 
-          let webUrlElem = this.shadowRoot.querySelector(".direct-link");
+            const webUrl: string = data.webUrl;
+            const webUrlElem = this.shadowRoot!.querySelector('.direct-link');
+            webUrlElem!.addEventListener('click', function() {
 
-          webUrlElem.onclick = function() {
+                if (TeamsHelper.isTeamsAvailable()) {
 
-              if (TeamsProvider.isAvailable) {
+                    TeamsHelper.executeDeepLink(webUrl);
+                } 
+                else {
 
-                  teams.executeDeepLink(data.webUrl);
-              } else {
+                    parent.open(webUrl);
+                }
+            });
+        }
+    }
 
-                  parent.open(data.webUrl);
-              }
-          };
-      }
-  }
+    connectedCallback() {
 
-  connectedCallback() {
+        let displayName = this.getAttribute('display-name');
+        let description = this.getAttribute('description');
+        let webUrl = this.getAttribute('webUrl');
 
-      let displayName = this.getAttribute("display-name");
-      let description = this.getAttribute("description");
-      let webUrl = this.getAttribute("webUrl");
+        this.render({
 
-      this.render({
+            displayName: displayName,
+            description: description,
+            webUrl: webUrl
+        });
+    }
 
-          displayName: displayName,
-          description: description,
-          webUrl: webUrl
-      });
-  }
+    /**
+     *
+     * Update Ui element of a single study group element
+     * @param {*} name
+     * @param {*} oldValue
+     * @param {*} newValue
+     * @returns
+     * @memberof StudyGroupItemElement
+     */
+    attributeChangedCallback(name: string, oldValue: any, newValue: any) {
 
-  /**
-   *
-   * Update Ui element of a single study group element
-   * @param {*} name
-   * @param {*} oldValue
-   * @param {*} newValue
-   * @returns
-   * @memberof StudyGroupItemElement
-   */
-  attributeChangedCallback(name, oldValue, newValue) {
+        if (!this.isConnected) return;
 
-      if (!this.isConnected || !this.shadowRoot) return;
+        switch (name) {
 
-      switch (name) {
+            case 'display-name':
+                this.render({ displayName: newValue });
+                break;
 
-      case "display-name":
-          this.render({
-              displayName: newValue
-          });
-          break;
+            case 'description':
+                this.render({ description: newValue });
+                break;
 
-      case "description":
-          this.render({
-              description: newValue
-          });
-          break;
-      case "webUrl":
-          this.render({
-          
-              webUrl: newValue
-          });
-      }
-  }
+            case 'webUrl':
+                this.render({ webUrl: newValue });
+                break;
+        }
+    }
+        
+    protected getTemplate(): HTMLTemplateElement {
+        
+        const template = document.createElement('template');
+        template.innerHTML = require('./study-group-item.html');
+        return template;
+    }
 }
 
 customElements.define('study-group-item', StudyGroupItem);

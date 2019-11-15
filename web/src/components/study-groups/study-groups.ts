@@ -7,32 +7,25 @@
  */
 import { Providers } from '@microsoft/mgt';
 import { Component } from '../component';
-import { CreateStudyGroupFlyout } from '..';
+import { CreateStudyGroupFlyout, StudyGroupItem } from '..';
 
 export class StudyGroups extends Component {
-    
-    protected getTemplate(): HTMLTemplateElement {
-        const template = document.createElement('template');
-        template.innerHTML = require('./study-groups.html');
-        return template;
-    }
 
-    _studyGroupItems = [];
+    private _studyGroupItems: Array<StudyGroupItem> = [];
 
     async connectedCallback() {
 
-        this.createButton = this.shadowRoot!.querySelector(".create-button");
-        this.createButton.addEventListener("click", this.handleCreateClick.bind(this));
+        const createButton = this.shadowRoot!.querySelector('.create-button');
+        createButton!.addEventListener('click', (e) => this.handleCreateClick());
 
         this.fetchChannels();
     }
-
    
-    render() {
+    private render() {
 
         if (this._studyGroupItems && this._studyGroupItems.length > 0) {
 
-            let itemsContainer = this.shadowRoot!.querySelector(".items-container");
+            let itemsContainer = this.shadowRoot!.querySelector('.items-container');
             while (itemsContainer && itemsContainer.lastChild) {
 
                 itemsContainer!.removeChild(itemsContainer.lastChild);
@@ -45,25 +38,25 @@ export class StudyGroups extends Component {
             }
         }
     }
-
     
     /**
      * Get and set coordinates for stydy group creation modal
      *
      * @memberof StudyGroupsViewElement
      */
-    handleCreateClick() {
+    private handleCreateClick() {
 
-        let rect = this.createButton.getBoundingClientRect();
-        let top  = window.pageYOffset || document.documentElement.scrollTop;
-        let left = window.pageXOffset || document.documentElement.scrollLeft;
+        const createButton = this.shadowRoot!.querySelector('.create-button');
+        const rect = createButton!.getBoundingClientRect();
+        const top  = window.pageYOffset || document.documentElement.scrollTop;
+        const left = window.pageXOffset || document.documentElement.scrollLeft;
 
-        let x = rect.left + left;
-        let y = rect.bottom + top;
+        const x = rect.left + left;
+        const y = rect.bottom + top;
 
-        let createStudyGroupView = new CreateStudyGroupFlyout();
-        createStudyGroupView.addEventListener("channelCreated", this.refreshChannels.bind(this));
-        createStudyGroupView.showAt(x, y);
+        const flyout = new CreateStudyGroupFlyout();
+        flyout.addEventListener('channelCreated', (e) => this.refreshChannels(e));
+        flyout.showAt(x, y);
     }
 
     /**
@@ -72,18 +65,21 @@ export class StudyGroups extends Component {
      * @param {*} e
      * @memberof StudyGroupsViewElement
      */
-    async refreshChannels(e){
+    private async refreshChannels(e: any){
 
         let content = e.detail;
-        let item = document.createElement("study-group-item");
+        let item = <StudyGroupItem>document.createElement('study-group-item');
 
-        item.setAttribute("display-name", content["displayName"]);
-        item.setAttribute("description", content["description"]);
-        item.onclick = function () {parent.open(content["webUrl"]);};
+        item.setAttribute('display-name', content['displayName']);
+        item.setAttribute('description', content['description']);
+
+        // TODO: Validate that this doesn't need to operate differently in a Teams context.
+        item.addEventListener('click', () => parent.open(content['webUrl']));
        
         this._studyGroupItems.push(item);
-        let itemsContainer = this.shadowRoot!.querySelector(".items-container");
-        itemsContainer.appendChild(item);
+
+        let itemsContainer = this.shadowRoot!.querySelector('.items-container');
+        itemsContainer!.appendChild(item);
     }
 
     /**
@@ -91,25 +87,35 @@ export class StudyGroups extends Component {
      *
      * @memberof StudyGroupsViewElement
      */
-    async fetchChannels(){
+    private async fetchChannels(){
         
-        let url = new URLSearchParams(location.search);
-        let provider = Providers.globalProvider;
-        let channels = null; 
-        let graphClient = provider.graph.client;
-        channels = await graphClient.api(`/teams/${url.get("groupId")}/channels`).get();
-        let totalChannels = channels["value"]["length"];
+        const url = new URLSearchParams(location.search);
+        const provider = Providers.globalProvider;
+        const graphClient = provider.graph.client;
+        const channels = await graphClient.api(`/teams/${url.get('groupId')}/channels`).get();
+        const totalChannels = channels['value']['length'];
+        
         for(let i = 0; i < totalChannels; i++) {
 
-            let item = document.createElement("study-group-item");
-            let content = channels["value"][i];
-            item.setAttribute("display-name", content["displayName"]);
-            item.setAttribute("description", content["description"]);
-            item.setAttribute("webUrl", content["webUrl"]);
+            let content = channels['value'][i];
+
+            let item = <StudyGroupItem>document.createElement('study-group-item');
+            item.setAttribute('display-name', content['displayName']);
+            item.setAttribute('description', content['description']);
+            item.setAttribute('webUrl', content['webUrl']);
+
             this._studyGroupItems.push(item);
         }
+
         this.render();
+    }
+    
+    protected getTemplate(): HTMLTemplateElement {
+        
+        const template = document.createElement('template');
+        template.innerHTML = require('./study-groups.html');
+        return template;
     }
 }
 
-customElements.define('study-groups-view', StudyGroupsView);
+customElements.define('study-groups', StudyGroups);

@@ -4,7 +4,7 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Component } from "./component";
+import { Component } from './component';
 
 export abstract class ViewComponent extends Component {
     

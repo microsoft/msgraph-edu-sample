@@ -13,18 +13,18 @@ TeamsProvider.microsoftTeamsLib = teams;
 export class TeamsHelper {
 
     private static _scopes = [
-        "user.read",
-        "people.read",
-        "user.readbasic.all",
-        "contacts.read",
-        "calendars.read",
-        "files.read",
-        "group.read.all",
-        "tasks.readwrite",
-        "Group.ReadWrite.All",
-        "EduRoster.ReadBasic",
-        "User.Read.All",
-        "User.ReadWrite.All"
+        'user.read',
+        'people.read',
+        'user.readbasic.all',
+        'contacts.read',
+        'calendars.read',
+        'files.read',
+        'group.read.all',
+        'tasks.readwrite',
+        'Group.ReadWrite.All',
+        'EduRoster.ReadBasic',
+        'User.Read.All',
+        'User.ReadWrite.All'
     ];
 
     /**
@@ -45,7 +45,7 @@ export class TeamsHelper {
             TeamsProvider.microsoftTeamsLib = teams;
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: "teams-auth-view.html",
+                authPopupUrl: 'teams-auth-view.html',
                 scopes: this._scopes
             });
         } 
@@ -61,6 +61,16 @@ export class TeamsHelper {
     public static handleAuth() {
 
         TeamsProvider.handleAuth();
+    }
+
+    public static isTeamsAvailable(): boolean {
+
+        return TeamsProvider.isAvailable;
+    }
+
+    public static executeDeepLink(deeplink: string, onComplete?: ((status: boolean, reason?: string | undefined) => void) | undefined): void {
+
+        teams.executeDeepLink(deeplink, onComplete);
     }
 
     /**
@@ -101,7 +111,7 @@ export class TeamsHelper {
         const provider = Providers.globalProvider;
         const graphClient = provider.graph.client;
         const url = new URLSearchParams(location.search);
-        const groupId = url.get("groupId");
+        const groupId = url.get('groupId');
 
         try {
 
@@ -112,23 +122,23 @@ export class TeamsHelper {
 
                 mentionsJsonArray.push({
                     id: i,
-                    mentionText: people[i]["displayName"],
+                    mentionText: people[i]['displayName'],
                     mentioned: {
                         user: {
-                            displayName: people[i]["displayName"],
-                            id: people[i]["id"],
-                            userIdentityType: "aadUser"
+                            displayName: people[i]['displayName'],
+                            id: people[i]['id'],
+                            userIdentityType: 'aadUser'
                         }
                     }
                 });
 
-                contentString += `<at id=\"${i}\">${people[i]["displayName"]}</at>, `;
+                contentString += `<at id=\'${i}\'>${people[i]['displayName']}</at>, `;
             }
 
             const messageUrl = `teams/${groupId}/channels/${channelId}/messages`;
             const messageContent = {
                 body: {
-                    contentType: "html",
+                    contentType: 'html',
                     content: `Hi, ${contentString} I created this group to help us better communicate about ${groupNameInput}`
                 },
                 mentions: mentionsJsonArray
@@ -136,7 +146,7 @@ export class TeamsHelper {
 
             await graphClient
                 .api(messageUrl)
-                .version("beta")
+                .version('beta')
                 .post(messageContent);
         } 
         catch (error) {

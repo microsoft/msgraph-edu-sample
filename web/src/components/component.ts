@@ -41,7 +41,7 @@ export abstract class Component extends HTMLElement {
 
     // Invoked each time one of the custom element's attributes is added, removed, or changed. 
     // Which attributes to notice change for is specified in a static get observedAttributes method
-    attributeChangedCallback() {
+    attributeChangedCallback(name: string, oldValue: any, newValue: any) {
 
     }
 }

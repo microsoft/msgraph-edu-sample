@@ -4,7 +4,7 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { ViewComponent } from "../view-component";
+import { ViewComponent } from '../view-component';
 import { TeamsHelper } from '../../helpers';
 
 export class TeamsAuthView extends ViewComponent {

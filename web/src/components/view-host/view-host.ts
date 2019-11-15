@@ -4,17 +4,10 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { Component } from "../component";
-import { ViewComponent } from "../view-component";
+import { Component } from '../component';
+import { ViewComponent } from '../view-component';
 
 export class ViewHost extends Component {
-    
-    protected getTemplate(): HTMLTemplateElement {
-
-        const template = document.createElement('template');
-        template.innerHTML = require('./view-host.html');
-        return template;
-    }
 
     /**
      * Change the ViewComponent being displayed
@@ -31,6 +24,13 @@ export class ViewHost extends Component {
 
         // Append the new view
         contentRoot!.appendChild(view);
+    }
+    
+    protected getTemplate(): HTMLTemplateElement {
+
+        const template = document.createElement('template');
+        template.innerHTML = require('./view-host.html');
+        return template;
     }
 }
 
