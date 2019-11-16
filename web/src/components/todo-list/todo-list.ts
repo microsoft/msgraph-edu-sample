@@ -11,6 +11,8 @@ export class TodoList extends Component {
 
     connectedCallback() {
 
+        super.connectedCallback();
+
         let createButton = <HTMLButtonElement>this.shadowRoot!.querySelector('.create-button');
         createButton.addEventListener('click', (e) => this.handleCreateClick());
     }

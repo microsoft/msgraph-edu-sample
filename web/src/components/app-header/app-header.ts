@@ -12,6 +12,8 @@ export class AppHeader extends Component {
     
     connectedCallback() {
 
+        super.connectedCallback();
+
         let backArrow = this.shadowRoot!.querySelector('.back-arrow');
         backArrow!.addEventListener('click', this.backArrowClick);
     }

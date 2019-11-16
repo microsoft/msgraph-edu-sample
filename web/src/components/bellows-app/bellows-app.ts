@@ -20,6 +20,8 @@ export class BellowsApp extends Component {
 
     connectedCallback() {
 
+        super.connectedCallback();
+
         const viewHost = <ViewHost>this.shadowRoot!.querySelector('view-host');
         NavigationHelper.setActiveViewHost(viewHost);
     }

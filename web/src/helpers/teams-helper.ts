@@ -6,6 +6,7 @@
  */
 import teams from '@microsoft/teams-js';
 import { Providers, TeamsProvider, MsalProvider, MgtPeople } from '@microsoft/mgt';
+import { SessionHelper, ConfigHelper } from '.';
 
 // TODO: Consider removing. Possibly uneccesary, need to test.
 TeamsProvider.microsoftTeamsLib = teams;
@@ -35,7 +36,7 @@ export class TeamsHelper {
     public static initGlobalProvider(){
 
         // TODO: Decouple const values from process.env
-        const clientId = process.env.CLIENT_ID;
+        const clientId = ConfigHelper.CLIENT_ID;
         if (!clientId) {
             throw new Error('Missing clientId value in env');
         }
@@ -110,8 +111,7 @@ export class TeamsHelper {
 
         const provider = Providers.globalProvider;
         const graphClient = provider.graph.client;
-        const url = new URLSearchParams(location.search);
-        const groupId = url.get('groupId');
+        const groupId = SessionHelper.get<string>('groupId');
 
         try {
 

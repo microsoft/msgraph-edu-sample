@@ -53,6 +53,8 @@ export class StudyGroupItem extends Component {
     }
 
     connectedCallback() {
+        
+        super.connectedCallback();
 
         let displayName = this.getAttribute('display-name');
         let description = this.getAttribute('description');

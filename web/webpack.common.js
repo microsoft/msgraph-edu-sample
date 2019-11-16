@@ -10,11 +10,11 @@ module.exports = {
         filename: 'app.bundle.js'
     },  
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.json']
+        extensions: ['.ts', '.js', '.json']
     },
     module: {
         rules: [{ 
-            test: /\.(ts|js)x?$/,
+            test: /\.(ts|js)$/,
             exclude: /node_modules/,
             use: 'babel-loader' 
         }, {
@@ -61,7 +61,7 @@ module.exports = {
             crossorigin: '', //can be null, use-credentials or anonymous
             icons: [
                 {
-                    src: './src/assets/icons/android-launchericon-512-512.png',
+                    src: './assets/icons/android-launchericon-512-512.png',
                     sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
                 }
                    ]}),

@@ -13,6 +13,8 @@ export class SignInView extends ViewComponent {
     
     connectedCallback() {
 
+        super.connectedCallback();
+        
         if (TeamsProvider.isAvailable) {
 
             let loginButton = this.shadowRoot!.querySelector('.login-component');

@@ -8,9 +8,11 @@ import { MgtAgenda } from '@microsoft/mgt';
 import { Component } from '../component';
 import { SessionHelper, TeamsHelper } from '../../helpers';
 
-export class Timeline extends Component {
+export class TimelineComponent extends Component {
     
     connectedCallback() {
+
+        super.connectedCallback();
 
         const classId: string = SessionHelper.get<string>('classId');
 
@@ -27,7 +29,7 @@ export class Timeline extends Component {
     /**
      * Create a new calender event with Teams
      *
-     * @memberof TimelineViewElement
+     * @memberof Agenda
      */
     handleCreateClick() {
 
@@ -123,4 +125,4 @@ export class Timeline extends Component {
     }
 }
 
-customElements.define('timeline', Timeline);
+customElements.define('timeline-component', TimelineComponent);

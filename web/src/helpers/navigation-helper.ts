@@ -20,8 +20,8 @@ export class NavigationHelper {
     public static setActiveViewHost(viewHost: ViewHost): void {        
 
         // Unload if necessary
-        if (viewHost !== this._activeViewHost) {
-            this._currentView!.unload();
+        if (this._currentView && viewHost !== this._activeViewHost) {
+            this._currentView.unload();
         }
 
         this._activeViewHost = viewHost;
@@ -52,10 +52,12 @@ export class NavigationHelper {
         setTimeout(() => {
 
             // Unload previous view
-            NavigationHelper._currentView!.unload();
+            if (this._currentView) {
+                this._currentView.unload();
+            }
 
             // Prep the new view
-            NavigationHelper._currentView = view;
+            this._currentView = view;
 
             // Update the DOM
             this._activeViewHost!.updateView(view);

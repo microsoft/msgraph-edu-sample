@@ -8,8 +8,6 @@ export abstract class Component extends HTMLElement {
 
     constructor() {
         super();
-
-        this.applyTemplate();
     }
 
     protected abstract getTemplate(): HTMLTemplateElement;
@@ -24,6 +22,8 @@ export abstract class Component extends HTMLElement {
     // Invoked each time the custom element is appended into a document-connected element. 
     // This will happen each time the node is moved, and may happen before the element's contents have been fully parsed.
     connectedCallback() {
+
+        this.applyTemplate();
 
         // Note: connectedCallback may be called once your element is no longer connected, use Node.isConnected to make sure.
         // if (this.isConnected) { }

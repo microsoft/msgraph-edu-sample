@@ -1,6 +1,8 @@
-import { BellowsApp } from './components';
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
-require('../styles/global.css');
+import '../styles/global.css';
+import "./components";
 
-const app = new BellowsApp();
+const app = document.createElement('bellows-app');
 document.documentElement.appendChild(app);

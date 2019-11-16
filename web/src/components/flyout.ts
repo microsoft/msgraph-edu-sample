@@ -10,6 +10,8 @@ export abstract class Flyout extends Component {
 
     connectedCallback() {
 
+        super.connectedCallback();
+
         const lightDismissPanel = this.shadowRoot!.querySelector('.light-dismiss-panel');
         lightDismissPanel!.addEventListener('pointerdown', (e) => this.handleRootClick(e));
     }

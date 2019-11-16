@@ -8,12 +8,15 @@
 import { Providers } from '@microsoft/mgt';
 import { Component } from '../component';
 import { CreateStudyGroupFlyout, StudyGroupItem } from '..';
+import { SessionHelper } from '../../helpers';
 
 export class StudyGroups extends Component {
 
     private _studyGroupItems: Array<StudyGroupItem> = [];
 
     async connectedCallback() {
+
+        super.connectedCallback();
 
         const createButton = this.shadowRoot!.querySelector('.create-button');
         createButton!.addEventListener('click', (e) => this.handleCreateClick());
@@ -89,10 +92,10 @@ export class StudyGroups extends Component {
      */
     private async fetchChannels(){
         
-        const url = new URLSearchParams(location.search);
+        const groupId = SessionHelper.get<string>('groupId');
         const provider = Providers.globalProvider;
         const graphClient = provider.graph.client;
-        const channels = await graphClient.api(`/teams/${url.get('groupId')}/channels`).get();
+        const channels = await graphClient.api(`/teams/${groupId}/channels`).get();
         const totalChannels = channels['value']['length'];
         
         for(let i = 0; i < totalChannels; i++) {
