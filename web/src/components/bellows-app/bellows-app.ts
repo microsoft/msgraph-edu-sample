@@ -5,7 +5,8 @@
  * -------------------------------------------------------------------------------------------
  */
 import { Component, ViewHost } from '..';
-import { PwaBuilderHelper, TeamsHelper, NavigationHelper } from '../../helpers/';
+import { PwaBuilderHelper, TeamsHelper, NavigationHelper, SessionHelper } from '../../helpers/';
+import { ViewComponent } from '../view-component';
 
 export class BellowsApp extends Component {
     
@@ -24,6 +25,15 @@ export class BellowsApp extends Component {
 
         const viewHost = <ViewHost>this.shadowRoot!.querySelector('view-host');
         NavigationHelper.setActiveViewHost(viewHost);
+
+        const classId = SessionHelper.get<string>('classId');
+        const groupId = SessionHelper.get<string>('groupId');
+        
+        const view: ViewComponent = (!classId || !groupId) 
+            ? <ViewComponent>document.createElement('sign-in-view')
+            : <ViewComponent>document.createElement('main-view');
+
+        NavigationHelper.navigate(view);
     }
     
     protected getTemplate(): HTMLTemplateElement {
