@@ -1,5 +1,6 @@
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
@@ -59,12 +60,15 @@ module.exports = {
             description: 'An app for student project managment.',
             background_color: '#5b7ad0',
             crossorigin: '', //can be null, use-credentials or anonymous
-            icons: [
-                {
-                    src: './assets/icons/android-launchericon-512-512.png',
-                    sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-                }
-                   ]}),
-        new Dotenv()
+            icons: [{
+                src: './assets/icons/android-launchericon-512-512.png',
+                sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+            }]
+        }),
+        new Dotenv(),
+        new CopyWebpackPlugin([
+            { from: 'public', to: '.' },
+            { from: 'assets', to: '.' }
+        ])
     ]
 };

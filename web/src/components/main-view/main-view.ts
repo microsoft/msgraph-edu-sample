@@ -6,9 +6,10 @@
  */
 import teams from '@microsoft/teams-js';
 import { Providers, IProvider, MgtPeople } from '@microsoft/mgt';
-import { ViewComponent } from '../view-component';
+import { View } from '../view';
+import { ConfigHelper } from '../../helpers';
 
-export class MainView extends ViewComponent {
+export class MainView extends View {
     
     /**
      * Populate course information.
@@ -47,9 +48,9 @@ export class MainView extends ViewComponent {
             let groupName = groupInfo['displayName'];
             teamName!.textContent = groupName;
             
-            let startDate = process.env.START_DATE;
-            let endDate = process.env.END_DATE;
-            let year = process.env.YEAR;
+            let startDate = ConfigHelper.START_DATE;
+            let endDate = ConfigHelper.END_DATE;
+            let year = ConfigHelper.YEAR;
             let courseDates = startDate + ' - ' + endDate + ', ' + year;
 
             this.shadowRoot!.querySelector('.class-dates')!.textContent = courseDates;

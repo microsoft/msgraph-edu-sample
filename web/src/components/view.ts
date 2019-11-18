@@ -6,7 +6,7 @@
  */
 import { Component } from './component';
 
-export abstract class ViewComponent extends Component {
+export abstract class View extends Component {
     
     load(data: any): void {
         

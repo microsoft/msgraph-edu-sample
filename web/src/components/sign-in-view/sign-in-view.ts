@@ -6,10 +6,10 @@
  */
 import { Providers, TeamsProvider } from '@microsoft/mgt';
 import { NavigationHelper, SessionHelper } from '../../helpers';
-import { ViewComponent } from '..';
+import { View } from '..';
 
 // TODO: Remove the hardcoded styles in this class
-export class SignInView extends ViewComponent {
+export class SignInView extends View {
     
     connectedCallback() {
 
@@ -49,7 +49,7 @@ export class SignInView extends ViewComponent {
         SessionHelper.set('classId', classId);
         SessionHelper.set('groupId', groupId);
 
-        let view = <ViewComponent>document.createElement('main-view');
+        let view = <View>document.createElement('main-view');
         NavigationHelper.navigate(view, {
             groupId: groupId,
             classId: classId

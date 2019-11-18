@@ -5,7 +5,7 @@
  * -------------------------------------------------------------------------------------------
  */
 import { Component } from './component';
-import { ViewComponent } from './view-component';
+import { View } from './view';
 import { Flyout } from './flyout';
 import { BellowsApp } from './bellows-app/bellows-app';
 import { AppHeader } from './app-header/app-header';
@@ -22,7 +22,7 @@ import { ViewHost } from './view-host/view-host';
 export {
     Component,
     Flyout,
-    ViewComponent,
+    View,
     ViewHost,
     AppHeader,
     BellowsApp,

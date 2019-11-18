@@ -20,8 +20,7 @@ export class AppHeader extends Component {
 
     private backArrowClick() {
 
-        const view = <SignInView>document.createElement('sign-in-view');
-        NavigationHelper.navigate(view);
+        NavigationHelper.goBack();
     }
 
     protected getTemplate(): HTMLTemplateElement  {

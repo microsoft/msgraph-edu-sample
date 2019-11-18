@@ -54,10 +54,6 @@ Applications will need to populate the following variables via an environment va
 If you choose to deploy this app to Azure, you can set environment variables in the Azure App Service User Interface.
 
 * CLIENT_ID (mandatory)
-* REL_FILE_PATH (optional)
-* WORKBOOK_NAME (optional)
-* PROGRESS_QUERY (optional)
-* COLLABORATION_QUERY (optional)
 * START_DATE (optional)
 * END_DATE (optional)
 * YEAR (optional)

@@ -6,7 +6,7 @@
  */
 import { Component, ViewHost } from '..';
 import { PwaBuilderHelper, TeamsHelper, NavigationHelper, SessionHelper } from '../../helpers/';
-import { ViewComponent } from '../view-component';
+import { View } from '../view';
 
 export class BellowsApp extends Component {
     
@@ -29,9 +29,9 @@ export class BellowsApp extends Component {
         const classId = SessionHelper.get<string>('classId');
         const groupId = SessionHelper.get<string>('groupId');
         
-        const view: ViewComponent = (!classId || !groupId) 
-            ? <ViewComponent>document.createElement('sign-in-view')
-            : <ViewComponent>document.createElement('main-view');
+        const view: View = (!classId || !groupId) 
+            ? <View>document.createElement('sign-in-view')
+            : <View>document.createElement('main-view');
 
         NavigationHelper.navigate(view);
     }

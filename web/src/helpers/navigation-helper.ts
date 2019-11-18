@@ -4,12 +4,13 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { ViewHost, ViewComponent } from '../components';
+import { ViewHost, View } from '../components';
 
 export class NavigationHelper {
 
     private static _activeViewHost: ViewHost | null;
-    private static _currentView: ViewComponent | null;
+    private static _currentView: View | null;
+    private static _currentState: any = null;
 
     /**
      * Update the ViewHost object.
@@ -29,41 +30,72 @@ export class NavigationHelper {
     }
 
     /**
+     * Change the active View being displayed in the active ViewHost
+     * @param viewKey = the tagname for the target view
+     * @param parameter = data to load the target view with
+     */
+    public static navigate(view: View, parameter: any = undefined): void {
+
+        if (this._activeViewHost == null) return;
+
+        // Unload previous view
+        const previousView = this._currentView;
+        if (previousView) {
+            previousView.unload();
+        }
+
+        // Prep the new view
+        this._currentView = view;
+        this._currentState == parameter;
+
+        // Update the DOM
+        this._activeViewHost.updateView(view);
+
+        const state = {
+            parameter: parameter,
+            viewTagName: view.tagName
+        };
+        history.pushState(state, '', '');
+
+        // Load with data
+        view.load(parameter);
+    }
+
+    /**
      * Wire up the popstate listener to handle back navigation
      */
     public static initPopStateHandler(): void {        
         
-        window.addEventListener('popstate', () => {
-            
-            // TODO: Fix this
-            //window.location = location.origin;
-        });
+        window.history.replaceState(null, '', window.location.pathname);
+        window.addEventListener('popstate', (e) => this.handlePopState(e));
     }
 
     /**
-     * Change the active ViewComponent being displayed in the active ViewHost
-     * @param viewKey = the tagname for the target view
-     * @param parameter = data to load the target view with
+     * Triggers the popState handler
      */
-    public static navigate(view: ViewComponent, parameter: any = undefined): void {
+    public static goBack() {
 
-        // Timeout is used to avoid timing issues
-        // TODO: Reevaluate whether the timeout is required or not.
-        setTimeout(() => {
+        window.history.back();
+    }
 
-            // Unload previous view
-            if (this._currentView) {
-                this._currentView.unload();
-            }
+    /**
+     * Handle a back navigation
+     * @param e 
+     */
+    private static handlePopState(e: PopStateEvent): void {
 
-            // Prep the new view
-            this._currentView = view;
+        if (!e.state) {
+            window.history.back();
+            return;
+        }
 
-            // Update the DOM
-            this._activeViewHost!.updateView(view);
+        const { parameter, viewTagName } = e.state;
+        if (this._currentState === parameter && this._currentView!.tagName === viewTagName) {
+            window.history.back();
+            return;
+        }
 
-            // Load with data
-            view.load(parameter);
-        }, 0);
+        const view = document.createElement(viewTagName);
+        this.navigate(view, parameter);
     }
 }

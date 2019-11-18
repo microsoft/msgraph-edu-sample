@@ -35,7 +35,6 @@ export class TeamsHelper {
      */
     public static initGlobalProvider(){
 
-        // TODO: Decouple const values from process.env
         const clientId = ConfigHelper.CLIENT_ID;
         if (!clientId) {
             throw new Error('Missing clientId value in env');
@@ -46,7 +45,7 @@ export class TeamsHelper {
             TeamsProvider.microsoftTeamsLib = teams;
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: 'teams-auth-view.html',
+                authPopupUrl: 'teams-auth-view.html', // TODO: fix this
                 scopes: this._scopes
             });
         } 

@@ -5,15 +5,15 @@
  * -------------------------------------------------------------------------------------------
  */
 import { Component } from '../component';
-import { ViewComponent } from '../view-component';
+import { View } from '../view';
 
 export class ViewHost extends Component {
 
     /**
-     * Change the ViewComponent being displayed
+     * Change the View being displayed
      * @param view 
      */
-    public updateView(view: ViewComponent) {
+    public updateView(view: View) {
 
         const contentRoot = this.shadowRoot!.querySelector('.content-root');
 
