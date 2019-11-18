@@ -16,12 +16,6 @@ export class CreateStudyGroupFlyout extends Flyout {
 
         const createButton = this.shadowRoot!.querySelector('.create-button');
         createButton!.addEventListener('click', (e) => this.handleCreateClicked());
-
-        const groupNameInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-name-input');
-        groupNameInput!.value = 'New Study Group';
-
-        const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-description-input');
-        groupDescriptionInput!.value = 'New Study group description';
     }
 
     /**

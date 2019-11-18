@@ -28,7 +28,8 @@
         max-width: 230px;
     }
 
-    .group-name-input-header,
+    .group-name-input-header, 
+    .people-picker-input-header,
     .users-input-header,
     .group-description-input-header {
         font-size: 12px;
@@ -36,6 +37,7 @@
         color: #454545;
         opacity: 0.6;
         margin-left: 12px;
+        padding-top:5px; 
     }
 
     .users-input-header {
@@ -48,10 +50,13 @@
         margin-left: 12px;
         margin-top: 4px;
         margin-bottom: 4px;
-        border: 0;
         height: 18px;
         font-size: 14px;
         line-height: 16px;
+    }
+    input {
+        border: none;
+        border-style:none;
     }
 
     hr {
@@ -81,13 +86,14 @@
 </style>
 <div class='light-dismiss-panel'>
     <div class='flyout-panel'>
-        <div class='group-name-input-header'>Study group name</div>
-        <input class='group-name-input' type="text" />
+        <div class='group-name-input-header'>Study Group Name</div>
+        <input class='group-name-input' type="text" placeholder="New Study Group" />
         <hr />
-        <div class='group-description-input-header'>Study group description</div>
-        <input class='group-description-input' type="text" />
+        <div class='group-description-input-header'>Study Group Description</div>
+        <input class='group-description-input' type="text" placeholder="New Study Group Description" />
         <hr />
-        <div class="people-picker">
+        <div class="people-picker"> 
+        <div class='people-picker-input-header'>People Picker</div>
             <mgt-people-picker class="people-picker"></mgt-people-picker>
         </div>
 
