@@ -1,0 +1,111 @@
+<style>
+    :host {
+        all: initial;
+        display: block;
+        contain: content;
+        font-family: 'Segoe UI';
+    }
+
+    .header-panel {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 24px 24px 24px 0;
+
+    }
+
+    .section-title {
+        font-size: 32px;
+    }
+
+    .buttons-panel {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+    }
+
+    .buttons-panel>div {
+        min-width: 32px;
+        min-height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 8px;
+        cursor: pointer;
+
+
+    }
+
+    .content-panel {
+        background: #FFFFFF;
+        box-shadow: 0px 2.61404px 16.9912px rgba(0, 0, 0, 0.042);
+        user-select: none;
+        height: 552px;
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        padding-top:20px;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    .new-group-section {
+        display: flex;
+        margin-bottom: 8px;
+    }
+
+    .people-picker {
+        width: 354px;
+        margin: 0 4px 0 4px
+    }
+
+    mgt-people-picker {
+        width: 100%;
+        overflow-y: auto;
+    }
+
+    .create-button {
+        margin-top: 14px;
+        margin-left: 14px;
+    }
+
+    .create-study-group-title {
+        padding: 16px 4px 0 8px;
+        font-weight: bolder;
+
+
+    }
+
+    .header-wrapper {
+        display: grid;
+        grid-template-columns: 205px 12px;
+        grid-template-rows: 40px 12px;
+
+    }
+</style>
+
+<div class='header-panel'>
+    <div class='section-title'>Study Groups</div>
+    <div class="buttons-panel">
+
+        <div class="create-button">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10.9854 20.9677L10.9854 0.997147" stroke="#3063B2" stroke-width="1.2"
+                    stroke-linecap="round" />
+                <path d="M20.9696 10.9853L0.9991 10.9853" stroke="#3063B2" stroke-width="1.2" stroke-linecap="round" />
+            </svg>
+        </div>
+
+    </div>
+
+</div>
+<div class='content-panel'>
+
+    <div class='items-container'>
+
+
+    </div>
+</div>

@@ -1,27 +1,27 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require('path');
 const Dotenv = require('dotenv-webpack');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 module.exports = {
-    entry: './src/index.js',   
     output: {
-        path: __dirname + '/dist',
-        filename: 'bundle.js'
+        path: path.join(__dirname, 'dist'),
+        filename: 'app.bundle.js'
     },  
+    resolve: {
+        extensions: ['.ts', '.js', '.json']
+    },
     module: {
         rules: [{ 
-            test: /\.js$/, 
+            test: /\.(ts|js)$/,
+            exclude: /node_modules/,
             use: 'babel-loader' 
         }, {
             test: /\.html$/,
-            use: {
-                loader: 'html-loader',
-                options: {
-                    interpolate: true
-                }
-            }
-        }, { 
+            loader: 'html-loader'
+        }, {
             test: /\.(jp?g|png|gif)$/i,
             use: {
                 loader: 'url-loader',
@@ -38,28 +38,15 @@ module.exports = {
                     name:'[name].[ext]'
                 }
             }
-        },
-        { 
-            test: /\.scss$/,
-            use: [
-                { loader: "style-loader" }, // creates style nodes from JS strings
-                { loader: "css-loader" }, // translates CSS into CommonJS
-                { 
-                    loader: "sass-loader",  // compiles Sass to CSS, using Node Sass by default
-                    options: {
-                        implementation: require("sass")
-                    }
-                }
-            ]
+        }, {
+            test: /\.css$/,
+            use: ['style-loader', 'css-loader']
         }]
     },
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            hash: false,
-            inject:'head',
-            template:'./src/index.html',
-            filename: './index.html'
+            title: 'Bellows'
         }),
         new WebpackPwaManifest({
             filename: '[name].[ext]',
@@ -73,12 +60,15 @@ module.exports = {
             description: 'An app for student project managment.',
             background_color: '#5b7ad0',
             crossorigin: '', //can be null, use-credentials or anonymous
-            icons: [
-                {
-                    src: './src/assets/icons/android-launchericon-512-512.png',
-                    sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-                }
-                   ]}),
-        new Dotenv()
+            icons: [{
+                src: './assets/icons/android-launchericon-512-512.png',
+                sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+            }]
+        }),
+        new Dotenv(),
+        new CopyWebpackPlugin([
+            { from: 'public', to: '.' },
+            { from: 'assets', to: '.' }
+        ])
     ]
 };
