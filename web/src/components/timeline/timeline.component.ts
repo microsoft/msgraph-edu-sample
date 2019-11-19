@@ -33,7 +33,6 @@ export class TimelineComponent extends Component {
      */
     handleCreateClick() {
 
-        // TODO: Do this without string concatenation.
         let subject = encodeURI('Team Meeting');
         let startTime = encodeURI(new Date().toISOString());
         let endTime = encodeURI(new Date(Date.now() + 30 * 60 * 1000).toISOString());
@@ -60,29 +59,10 @@ export class TimelineComponent extends Component {
      */
     getDateFromDateTime(dateTimeString: string) {
 
-        // TODO: Replace this with date/string formatting
         let date = new Date(dateTimeString);
         date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-        let monthNames = [
-            'January',
-            'February',
-            'March',
-            'April',
-            'May',
-            'June',
-            'July',
-            'August',
-            'September',
-            'October',
-            'November',
-            'December'
-        ];
-
-        let monthIndex = date.getMonth();
-        let day = date.getDate();
-        let year = date.getFullYear();
-
-        return `${monthNames[monthIndex]} ${day} ${year}`;
+        let datestr = date.toDateString();
+        return datestr; 
     }
 
     /**
@@ -98,10 +78,10 @@ export class TimelineComponent extends Component {
             return 'ALL DAY';
         }
 
-        // TODO: Replace this with date/string formatting
         let prettyPrintTimeFromDateTime = function(date: Date) {
 
             date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+
             let hours = date.getHours();
             let minutes = date.getMinutes();
             let ampm = hours >= 12 ? 'PM' : 'AM';

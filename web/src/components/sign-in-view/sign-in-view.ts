@@ -8,7 +8,6 @@ import { Providers, TeamsProvider } from '@microsoft/mgt';
 import { NavigationHelper, SessionHelper } from '../../helpers';
 import { View } from '..';
 
-// TODO: Remove the hardcoded styles in this class
 export class SignInView extends View {
     
     connectedCallback() {
@@ -73,13 +72,10 @@ export class SignInView extends View {
 
                 let courseDropDown = <HTMLSelectElement>this.shadowRoot!.querySelector('.course-selector');
                 courseDropDown.options[0] = new Option('Select a Course','');
-                courseDropDown.options[0].style.cssText = 'background-color:#335795;';
 
                 for (let i = 0; i < coursesInfo['value']['length']; i++) {
 
-                    courseDropDown.options[(i +1)] = new Option(coursesInfo['value'][i]['displayName'],coursesInfo['value'][i]['id']);
-                    courseDropDown.options[(i +1)].style.cssText = 'background-color:#335795;';
-                }
+                    courseDropDown.options[(i +1)] = new Option(coursesInfo['value'][i]['displayName'],coursesInfo['value'][i]['id']);                }
             } 
             catch (error){
 
@@ -105,12 +101,10 @@ export class SignInView extends View {
 
                 let groupsDropDown = <HTMLSelectElement>this.shadowRoot!.querySelector('.group-selector');
                 groupsDropDown.options[0] = new Option('Select a Study Group','');
-                groupsDropDown.options[0].style.cssText = 'background-color:#335795;';
 
                 for (let i = 0; i < groupsInfo['value']['length']; i++) {
 
                     groupsDropDown.options[(i +1)] = new Option(groupsInfo['value'][i]['displayName'],groupsInfo['value'][i]['id']);
-                    groupsDropDown.options[(i +1)].style.cssText = 'background-color:#335795;';
                 }
 
             } 
