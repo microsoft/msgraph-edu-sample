@@ -8,11 +8,9 @@ import teams from '@microsoft/teams-js';
 import { Providers, TeamsProvider, MsalProvider, MgtPeople } from '@microsoft/mgt';
 import { SessionHelper, ConfigHelper } from '.';
 
-// TODO: Consider removing. Possibly uneccesary, need to test.
-TeamsProvider.microsoftTeamsLib = teams;
 
 export class TeamsHelper {
-
+    
     private static _scopes = [
         'user.read',
         'people.read',
@@ -27,6 +25,7 @@ export class TeamsHelper {
         'User.Read.All',
         'User.ReadWrite.All'
     ];
+    
 
     /**
      * Handles authentication for various providers 
@@ -43,9 +42,10 @@ export class TeamsHelper {
         if (TeamsProvider.isAvailable) {
 
             TeamsProvider.microsoftTeamsLib = teams;
+            
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: 'teams-auth-view.html', // TODO: fix this
+                authPopupUrl: './', // TODO: fix this
                 scopes: this._scopes
             });
         } 
