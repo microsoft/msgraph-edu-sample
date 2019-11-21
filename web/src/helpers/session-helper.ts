@@ -1,6 +1,7 @@
 export class SessionHelper {
 
     private static _sessionData: any = {};
+    
 
     public static clear() {
 
@@ -16,4 +17,6 @@ export class SessionHelper {
 
         return <T>this._sessionData[key];
     }
+
+    //TODO: add url and cookie caching methods
 }

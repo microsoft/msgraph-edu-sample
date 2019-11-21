@@ -5,7 +5,7 @@
  * -------------------------------------------------------------------------------------------
  */
 import { Component, ViewHost } from '..';
-import { PwaBuilderHelper, TeamsHelper, NavigationHelper, SessionHelper } from '../../helpers/';
+import { PwaBuilderHelper, NavigationHelper, SessionHelper, ProvidersHelper } from '../../helpers/';
 import { View } from '../view';
 
 export class BellowsApp extends Component {
@@ -14,7 +14,7 @@ export class BellowsApp extends Component {
         super();
 
         Notification.requestPermission();
-        TeamsHelper.initGlobalProvider();
+        ProvidersHelper.initGlobalProvider();
         PwaBuilderHelper.initServiceWorkerAsync();
         NavigationHelper.initPopStateHandler();
     }

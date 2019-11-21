@@ -6,7 +6,7 @@
  */
 import { MgtAgenda, TeamsProvider } from '@microsoft/mgt';
 import { Component } from '../component';
-import { SessionHelper, TeamsHelper } from '../../helpers';
+import { SessionHelper, TeamsHelper, ProvidersHelper } from '../../helpers';
 
 export class TimelineComponent extends Component {
     
@@ -14,7 +14,7 @@ export class TimelineComponent extends Component {
 
         super.connectedCallback();
 
-        TeamsHelper.initGlobalProvider();
+        ProvidersHelper.initGlobalProvider();
 
         const classId: string = SessionHelper.get<string>('classId');
 

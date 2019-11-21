@@ -5,67 +5,14 @@
  * -------------------------------------------------------------------------------------------
  */
 import * as microsoftTeams from "@microsoft/teams-js";
-import { Providers, TeamsProvider, MsalProvider, MgtPeople } from '@microsoft/mgt';
+import { Providers, TeamsProvider} from '@microsoft/mgt';
 import { SessionHelper, ConfigHelper } from '.';
 
 
 export class TeamsHelper {
+   
 
-
-
-    
-    private static _scopes = [
-        'user.read',
-        'people.read',
-        'user.readbasic.all',
-        'contacts.read',
-        'calendars.read',
-        'files.read',
-        'group.read.all',
-        'tasks.readwrite',
-        'Group.ReadWrite.All',
-        'EduRoster.ReadBasic',
-        'User.Read.All',
-        'User.ReadWrite.All'
-    ];
-
-    
-
-    /**
-     * Handles authentication for various providers 
-     *
-     * @memberof TeamsHelper
-     */
-    public static initGlobalProvider(){
-
-        const clientId = ConfigHelper.CLIENT_ID;
-        if (!clientId) {
-            throw new Error('Missing clientId value in env');
-        }
-
-        if (TeamsProvider.isAvailable) {
-            
-
-            TeamsProvider.microsoftTeamsLib = microsoftTeams;
-            
-            Providers.globalProvider = new TeamsProvider({
-                clientId: clientId,
-                authPopupUrl: 'index.html', // TODO: fix this
-                scopes: this._scopes
-            });
-
-
-        } 
-        else {
-
-            Providers.globalProvider = new MsalProvider({
-                clientId: clientId,
-                scopes: this._scopes
-            });
-        }
-    }
-
-    public static handleAuth() {
+    public static handleTeamsAuth() {
 
         TeamsProvider.handleAuth();
     }
@@ -108,7 +55,7 @@ export class TeamsHelper {
 
     public static updateTeamsContext() {
         microsoftTeams.getContext((context) => { 
-            SessionHelper.set("groupId", context.tid);
+            SessionHelper.set('groupId', context.tid);
          });
     }
 
@@ -126,7 +73,7 @@ export class TeamsHelper {
         const groupId = SessionHelper.get<string>('groupId');
 
         try {
-
+            //TODO: seprate this into another function 
             let mentionsJsonArray = [];
             let contentString = '';
 
