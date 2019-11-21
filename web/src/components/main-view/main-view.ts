@@ -95,7 +95,15 @@ export class MainView extends View {
         let message = encodeURI('Hey friend, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        TeamsHelper.executeDeepLink(createChatUrl);
+        let t = setTimeout(function() {
+            window.open(createChatUrl);
+        }, 1000);
+  
+        teams.getContext(function() {
+            clearTimeout(t);
+            teams.executeDeepLink(createChatUrl);
+        });
+
     }
 
     handleFindExpertClick() {
@@ -107,7 +115,16 @@ export class MainView extends View {
         let message = encodeURI('Hey expert, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        TeamsHelper.executeDeepLink(createChatUrl);
+
+        let t = setTimeout(function() {
+            window.open(createChatUrl);
+        }, 1000);
+  
+        teams.getContext(function() {
+            clearTimeout(t);
+            teams.executeDeepLink(createChatUrl);
+        });
+
     }
 
     handleAskTeacherClick() {
@@ -119,7 +136,15 @@ export class MainView extends View {
         let message = encodeURI('Hey professor, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        TeamsHelper.executeDeepLink(createChatUrl);
+        let t = setTimeout(function() {
+            window.open(createChatUrl);
+        }, 1000);
+  
+        teams.getContext(function() {
+            clearTimeout(t);
+            teams.executeDeepLink(createChatUrl);
+        });
+
     }
 
     protected getTemplate(): HTMLTemplateElement {

@@ -63,6 +63,23 @@ export class StudyGroups extends Component {
     }
 
     /**
+     * Create a new study group item
+     *
+     * @private
+     * @param {*} content
+     * @returns {StudyGroupItem}
+     * @memberof StudyGroups
+     */
+    private createItem(content: any):StudyGroupItem {
+
+        let item = <StudyGroupItem>document.createElement('study-group-item');
+        item.setAttribute('display-name', content['displayName']);
+        item.setAttribute('description', content['description']);
+        item.setAttribute('webUrl', content['webUrl']);
+        return item;
+    }
+
+    /**
      * Append the new study group item to the list of study groups.
      *
      * @param {*} e
@@ -71,12 +88,8 @@ export class StudyGroups extends Component {
     private async refreshChannels(e: any){
 
         let content = e.detail;
-        let item = <StudyGroupItem>document.createElement('study-group-item');
+        let item = this.createItem(content);
 
-        item.setAttribute('display-name', content['displayName']);
-        item.setAttribute('description', content['description']);
-
-        // TODO: Validate that this doesn't need to operate differently in a Teams context.
         item.addEventListener('click', () => parent.open(content['webUrl']));
        
         this._studyGroupItems.push(item);
@@ -85,13 +98,14 @@ export class StudyGroups extends Component {
         itemsContainer!.appendChild(item);
     }
 
+
     /**
      * Get all channels for a group and create study group wrapper elements 
      *
      * @memberof StudyGroupsViewElement
      */
     private async fetchChannels(){
-        
+
         const groupId = SessionHelper.get<string>('groupId');
         const provider = Providers.globalProvider;
         const graphClient = provider.graph.client;
@@ -102,16 +116,24 @@ export class StudyGroups extends Component {
 
             let content = channels['value'][i];
 
-            let item = <StudyGroupItem>document.createElement('study-group-item');
-            item.setAttribute('display-name', content['displayName']);
-            item.setAttribute('description', content['description']);
-            item.setAttribute('webUrl', content['webUrl']);
+            if (content['displayName'].charAt(0) == '-' ){
 
-            this._studyGroupItems.push(item);
+                content['displayName'] =  content['displayName'].slice(1,content['displayName'].length);
+                let item =  this.createItem(content);
+                this._studyGroupItems.push(item);
+                
+            }  else if (content['displayName'] == 'General') {
+
+                let item =  this.createItem(content);
+                this._studyGroupItems.push(item);
+            }
+            
         }
 
         this.render();
     }
+
+   
     
     protected getTemplate(): HTMLTemplateElement {
         
