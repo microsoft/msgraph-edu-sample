@@ -6,9 +6,9 @@
     "packageName": "com.bellows.teams.app",
     "developer": {
         "name": "Bellows",
-        "websiteUrl": "https://bellowsdemo.z22.web.core.windows.net/​​​​​​​",
-        "privacyUrl": "https://bellowsdemo.z22.web.core.windows.net/​​​​​​​privacy.html",
-        "termsOfUseUrl": "https://bellowsdemo.z22.web.core.windows.net​​​​​/termsofuse.html"
+        "websiteUrl": "https://<INSERT DOMAIN HERE>/​​​​​​​",
+        "privacyUrl": "https://<INSERT DOMAIN HERE>/​​​​​​​privacy.html",
+        "termsOfUseUrl": "https://<INSERT DOMAIN HERE>​​​​​/termsofuse.html"
     },
     "icons": {
         "color": "color.png",
@@ -27,8 +27,8 @@
         {
             "entityId": "BellowsTab",
             "name": "Bellows",
-            "contentUrl": "https://bellowsdemo.z22.web.core.windows.net/",
-            "websiteUrl": "https://bellowsdemo.z22.web.core.windows.net/​​​",
+            "contentUrl": "https://<INSERT DOMAIN HERE>/",
+            "websiteUrl": "https://<INSERT DOMAIN HERE>/​​​",
             "scopes": [
                 "personal"
             ]
@@ -39,6 +39,6 @@
         "messageTeamMembers"
     ],
     "validDomains": [
-        "bellowsdemo.z22.web.core.windows.net"
+        "<INSERT DOMAIN HERE>"
     ]
 }

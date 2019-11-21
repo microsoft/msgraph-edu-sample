@@ -13,8 +13,6 @@ The purpose of this demo application is showcase Microsoft Graph in a real-world
 | `teams`           | Manifest and assets to create Microsoft Teams app  |
 | `web`             | Example code, also a self contained npm project    |
 | `web/src`         | Source code for the project.                       |
-| `README.md`       | This README file.                                  |
-| `LICENSE`         | The license for the sample.                        |
 
 ### Technical Specifications:
 * Microsoft Graph integration
@@ -68,9 +66,9 @@ Navigate to the web folder and run the following commands:
 
 1. `npm i` to install dependencies
 
-2. `npm start` to build + deploy to http://localhost:8080/ 
+2. `npm start` to build + deploy to http://localhost:9000/ 
 
-3. `ngrok http 8080 -host-header=localhost:8080` to host locally using ngrok
+3. `ngrok http 8080 -host-header=localhost:9000` to host locally using ngrok
 
 
 ### Deploying an App to Azure
@@ -102,7 +100,7 @@ In this section, I walk the reader through a few code snippets.
 
  If you have not heard about the powerful Microsoft Graph Toolkit, allow us to introduce you to the People-Picker component. The [Mgt-People-Picker](https://docs.microsoft.com/en-us/graph/toolkit/components/people-picker) allows a developer to enable a user to select colleagues within an Azure tenant in a clean cross platform interface.
  
- Below is the HTML for the people picker that can be found in `create-study-group-view.html`. Note, the div wrapper is used for CSS styling.
+ Below is the HTML for the people picker that can be found in `create-study-group-flyout.html`. Note, the div wrapper is used for CSS styling.
 ```
         <div class="people-picker">
             <mgt-people-picker class="people-picker"></mgt-people-picker>
@@ -110,12 +108,15 @@ In this section, I walk the reader through a few code snippets.
 
 ```
 
-Now, let's take a look at how to access the chosen people in the `create-study-group-view.js` file.
+Now, let's take a look at how to access the chosen people in the `create-study-group-flyout.ts` file.
 
 ```
-let people = document.body
-          .querySelector("create-study-group-view")
-          .shadowRoot.querySelector("mgt-people-picker").selectedPeople;
+ const peoplePicker = <MgtPeoplePicker>this.shadowRoot!.querySelector('mgt-people-picker');
+ 
+ [...]
+
+ const people = peoplePicker!.selectedPeople;
+
 ```
 Now we can do some neat stuff with the chosen individuals.
 
@@ -154,20 +155,28 @@ async sendChatMessage(people, channelId, groupNameInput) {
 
 ### Microsoft Teams
 
-Teams integrations is another cool aspect of this project. For example, let’s examine the contents of the `teams-helper.js` under the services folder. The below code snippet is fundamental to this app’s authorization flow.
+Teams integrations is another cool aspect of this project. For example, let’s examine the contents of the `providers-helper.ts` under the services folder. The below code snippet is fundamental to this app’s authorization flow.
 
 ```  
-  handleProviders(){
+    public static initGlobalProvider(){
 
-        const clientId = process.env.CLIENT_ID;
+        const clientId = ConfigHelper.CLIENT_ID;
+        if (!clientId) {
+            throw new Error('Missing clientId value in env');
+        }
+
         if (TeamsProvider.isAvailable) {
-            TeamsProvider.microsoftTeamsLib = teams;
+            
+            TeamsProvider.microsoftTeamsLib = microsoftTeams;
+            
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: "teams-auth-view.html",
+                authPopupUrl: 'index.html', // TODO: fix this
                 scopes: this._scopes
             });
+            
         } else {
+
             Providers.globalProvider = new MsalProvider({
                 clientId: clientId,
                 scopes: this._scopes
@@ -181,70 +190,32 @@ If the app is running Microsoft Teams the Teams auth architecture is used, other
 
 ### PWA Builder
 
-The services folder is chalk full of fantastic open source integrations, if we look at the `pwabuilder-sw.js` we can find all the logic that enables us to pre-cache files and download the app onto a machines operating system. The Open Source [PWA Builder](https://www.pwabuilder.com/) initiative has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications!
+The helpers folder is chalk full of fantastic open source integrations, if we look at the `pwa-builder-helpers.ts` we can find all the logic that enables us to pre-cache files and download the app onto a machines operating system. The Open Source [PWA Builder](https://www.pwabuilder.com/) initiative has many cross platform [features](https://www.pwabuilder.com/features) available to help developers supercharge their applications!
 
-The below code gives an example of how to integrate a service worker into a babel/webpack project. Rather than manually copy/pasting a service worker to the root of the project, we can add the PWA service worker logic to the `bellows-app.js` file. This ensures service worker benefits are bundled on build into the distribution instance of our app.  
+The below code gives an example of how to integrate a service worker into a babel/webpack project. Rather than manually copy/pasting a service worker to the root of the project, we can import the PWA service logic to the `bellows-app.ts` file and maintain a modular codebase. This ensures service worker benefits are bundled on build into the distribution instance of our app.  
 
 ```
-
-      if ("serviceWorker" in navigator) {
-          if (navigator.serviceWorker.controller) {
-              console.log("[PWA Builder] active service worker found, no need to register");
-          } else {
-          // Register the service worker
-              navigator.serviceWorker
-                  .register(PwaBuilder, {
-                      scope: "./"
-                  })
-                  .then(function (reg) {
-                      console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
-                  });
-          }
-      }
+    if ('serviceWorker' in navigator) {
+                
+        if (navigator.serviceWorker.controller) {
+                    
+            console.log('[PWA Builder] active service worker found, no need to register');
+        } else {
+            // Register the service worker
+            const scriptUrl: string = './pwabuilder-sw.js';
+            const reg = await navigator.serviceWorker.register(scriptUrl, { scope: './' });
+            console.log('[PWA Builder] Service worker has been registered for scope: ' + reg.scope);
+                }
+            }
 
 ```
 
 
 ### Web Components
-This project defines many custom web components. The visual HTML template elements live in the `web/src/templates` folder. The business logic associated with the user interface element lives in the web/src/components folder.
+This project defines many custom web components. The visual HTML template elements and the bussiness logic of a compnent live in `web/src/components` subfolders.
 
-Modularization of code is an important principle of software engineering, for a canonical example of modern web components and their robust nature
-look into the interactions between `create-study-group-view.js`, `study-group-item.js`, and `study-group-view.js`. 
+Modularization of code is an important principle of software engineering, for a canonical example of modern web components and the robust nature pf typescript and objecxt oriented design checkout the inheritance of `component.ts` into `view.ts`.
 
-`create-study-group-view.js` creates a Teams channel based on user input and creates an event to notify `study-group-view.js`.
-
-```
-      let createNewChannelUrl = `https://graph.microsoft.com/v1.0/teams/${url.get(
-          "groupId"
-      )}/channels`;
-      let result = await graphClient
-          .api(createNewChannelUrl).post(channel);
-
-      let  channelId = result["id"];
-      channel["webUrl"] = result["webUrl"];
-
-      this.createEvent(channel);
-```
-
-Let's take a look at `study-group-view.js`, and the function that is bound to the channel creation event:
-
-```
- async refreshChannels(e){
-
-        let content = e.detail;
-        let item = document.createElement("study-group-item");
-
-        item.setAttribute("display-name", content["displayName"]);
-        item.setAttribute("description", content["description"]);
-        item.onclick = function () {parent.open(content["webUrl"]);};
-       
-        this._studyGroupItems.push(item);
-        let itemsContainer = this.shadowRoot.querySelector(".items-container");
-        itemsContainer.appendChild(item);
-    }
-```
-
-Notice that the creation of a study group item component element, population of the former element's content from the event that was received from the create-study-group component. This example provides a simple scenario for others to expand upon and customize to their unique use cases.
 
 ## Contributing
 
