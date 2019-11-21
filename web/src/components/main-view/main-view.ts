@@ -7,7 +7,7 @@
 import teams from '@microsoft/teams-js';
 import { Providers, IProvider, MgtPeople } from '@microsoft/mgt';
 import { View } from '../view';
-import { ConfigHelper } from '../../helpers';
+import { ConfigHelper, TeamsHelper } from '../../helpers';
 
 export class MainView extends View {
     
@@ -95,14 +95,7 @@ export class MainView extends View {
         let message = encodeURI('Hey friend, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        let t = setTimeout(function() {
-            window.open(createChatUrl);
-        }, 1000);
-
-        teams.getContext(function() {
-            clearTimeout(t);
-            teams.executeDeepLink(createChatUrl);
-        });
+        TeamsHelper.executeDeepLink(createChatUrl);
     }
 
     handleFindExpertClick() {
@@ -114,16 +107,7 @@ export class MainView extends View {
         let message = encodeURI('Hey expert, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        let t = setTimeout(function() {
-
-            window.open(createChatUrl);
-        }, 1000);
-
-        teams.getContext(function() {
-
-            clearTimeout(t);
-            teams.executeDeepLink(createChatUrl);
-        });
+        TeamsHelper.executeDeepLink(createChatUrl);
     }
 
     handleAskTeacherClick() {
@@ -135,16 +119,7 @@ export class MainView extends View {
         let message = encodeURI('Hey professor, can I ask you a question?');
         let createChatUrl = `https://teams.microsoft.com/l/chat/0/0?users=${users}&topicName=${topicName}&message=${message}`;
 
-        let t = setTimeout(function() {
-
-            window.open(createChatUrl);
-        }, 1000);
-
-        teams.getContext(function() {
-
-            clearTimeout(t);
-            teams.executeDeepLink(createChatUrl);
-        });
+        TeamsHelper.executeDeepLink(createChatUrl);
     }
 
     protected getTemplate(): HTMLTemplateElement {
