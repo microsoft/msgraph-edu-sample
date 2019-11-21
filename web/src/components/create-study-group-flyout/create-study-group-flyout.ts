@@ -44,7 +44,8 @@ export class CreateStudyGroupFlyout extends Flyout {
         const groupDescriptionInput = <HTMLInputElement>this.shadowRoot!.querySelector('.group-description-input');
         const peoplePicker = <MgtPeoplePicker>this.shadowRoot!.querySelector('mgt-people-picker');
 
-        const groupName = groupNameInput.value;
+        const groupName = "-"+groupNameInput.value;
+        console.log(groupName);
         const groupDescription = groupDescriptionInput.value;
         const people = peoplePicker!.selectedPeople;
         let channel = {
