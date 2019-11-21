@@ -4,7 +4,7 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import { MgtAgenda } from '@microsoft/mgt';
+import { MgtAgenda, TeamsProvider } from '@microsoft/mgt';
 import { Component } from '../component';
 import { SessionHelper, TeamsHelper } from '../../helpers';
 
@@ -13,6 +13,8 @@ export class TimelineComponent extends Component {
     connectedCallback() {
 
         super.connectedCallback();
+
+        TeamsHelper.initGlobalProvider();
 
         const classId: string = SessionHelper.get<string>('classId');
 

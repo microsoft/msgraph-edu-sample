@@ -4,12 +4,15 @@
  * See License in the project root for license information.
  * -------------------------------------------------------------------------------------------
  */
-import teams from '@microsoft/teams-js';
+import * as microsoftTeams from "@microsoft/teams-js";
 import { Providers, TeamsProvider, MsalProvider, MgtPeople } from '@microsoft/mgt';
 import { SessionHelper, ConfigHelper } from '.';
 
 
 export class TeamsHelper {
+
+
+
     
     private static _scopes = [
         'user.read',
@@ -25,6 +28,7 @@ export class TeamsHelper {
         'User.Read.All',
         'User.ReadWrite.All'
     ];
+
     
 
     /**
@@ -40,14 +44,17 @@ export class TeamsHelper {
         }
 
         if (TeamsProvider.isAvailable) {
+            
 
-            TeamsProvider.microsoftTeamsLib = teams;
+            TeamsProvider.microsoftTeamsLib = microsoftTeams;
             
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: './', // TODO: fix this
+                authPopupUrl: 'index.html', // TODO: fix this
                 scopes: this._scopes
             });
+
+
         } 
         else {
 
@@ -70,7 +77,7 @@ export class TeamsHelper {
 
     public static executeDeepLink(deeplink: string, onComplete?: ((status: boolean, reason?: string | undefined) => void) | undefined): void {
 
-        teams.executeDeepLink(deeplink, onComplete);
+        microsoftTeams.executeDeepLink(deeplink, onComplete);
     }
 
     /**
@@ -97,6 +104,12 @@ export class TeamsHelper {
 
             Notification.requestPermission((p) => sendNotification(p === 'granted'));
         }
+    }
+
+    public static updateTeamsContext() {
+        microsoftTeams.getContext((context) => { 
+            SessionHelper.set("groupId", context.tid);
+         });
     }
 
     /**

@@ -22,7 +22,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.4.0",
     "@babel/preset-env": "^7.4.1",
     "@babel/preset-typescript": "^7.3.3",
-    "@microsoft/mgt": "file:microsoft-mgt-1.1.0-preview.2.tgz",
+    "@microsoft/mgt": "^1.1.0-preview.2",
     "@microsoft/teams-js": "^1.5.0",
     "@typescript-eslint/eslint-plugin": "^2.6.0",
     "@typescript-eslint/parser": "^2.6.0",
@@ -50,5 +50,7 @@
     "webpack-merge": "^4.2.1",
     "webpack-pwa-manifest": "^4.1.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "clean": "^4.0.2"
+  }
 }
