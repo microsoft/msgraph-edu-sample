@@ -5,6 +5,7 @@
  * -------------------------------------------------------------------------------------------
  */
 import { ViewHost, View } from '../components';
+import {SessionHelper} from "./session-helper";
 
 export class NavigationHelper {
 
@@ -74,7 +75,6 @@ export class NavigationHelper {
      * Triggers the popState handler
      */
     public static goBack() {
-
         window.history.back();
     }
 

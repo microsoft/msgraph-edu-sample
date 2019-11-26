@@ -9,6 +9,9 @@ export class SessionHelper {
     public static clear() {
 
         this._sessionData = {};
+        Cookies.remove("classId");
+        Cookies.remove("groupId");
+
     }
 
     public static set(key: string, value: any): void {
@@ -24,7 +27,7 @@ export class SessionHelper {
 
     private static setCookie(key:string,value:any){
 
-        Cookies.set(key,value);
+        Cookies.set(key,value, {expires: 1});
     }
 
     public static getCookie(key:string): string{
