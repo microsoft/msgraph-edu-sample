@@ -30,6 +30,9 @@ export class BellowsApp extends Component {
 
         const classId = SessionHelper.getCookie('classId');
         const groupId = SessionHelper.getCookie('groupId');
+
+        SessionHelper.set("classId", classId);
+        SessionHelper.set("groupId", groupId);
         
         const view: View = (!classId || !groupId) 
             ? <View>document.createElement('sign-in-view')

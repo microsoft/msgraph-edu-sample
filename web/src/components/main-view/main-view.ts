@@ -7,7 +7,7 @@
 import teams from '@microsoft/teams-js';
 import { Providers, IProvider, MgtPeople } from '@microsoft/mgt';
 import { View } from '../view';
-import { ConfigHelper, TeamsHelper } from '../../helpers';
+import { ConfigHelper, SessionHelper } from '../../helpers';
 
 export class MainView extends View {
     
@@ -73,6 +73,13 @@ export class MainView extends View {
     }
 
     load(parameter: any) {
+
+        if(!parameter){
+            parameter = {
+                "groupId": SessionHelper.getCookie("groupId"),
+                "classId": SessionHelper.getCookie("classId")
+                        };
+        }
 
         this.populateTeamInfo(parameter);
 
