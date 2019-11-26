@@ -219,6 +219,8 @@ Modularization of code is an important principle of software engineering, for a 
 
 ## Contributing
 
+*THIS REPOSITORY IS FOR DEMO PURPOSES - AS IS.*
+
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
