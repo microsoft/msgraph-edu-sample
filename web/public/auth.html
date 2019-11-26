@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bellows</title>
+</head>
+
+<body>
+  <bellows-app></bellows-app>
+  <script type="text/javascript" src="app.bundle.js"></script>
+  <script>
+    let app = document.querySelector('bellows-app');
+    let view = document.createElement('teams-auth-view');
+    app.navigate(view);
+  </script>
+</body>
+
+</html>
