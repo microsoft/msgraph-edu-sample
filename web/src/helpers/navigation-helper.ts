@@ -71,11 +71,22 @@ export class NavigationHelper {
         window.addEventListener('popstate', (e) => this.handlePopState(e));
     }
 
+    public static goHome() {
+        window.location.href = "/";
+    }
+
     /**
      * Triggers the popState handler
      */
     public static goBack() {
-        window.history.back();
+
+        if (window.history.length > 0){
+
+            window.history.back();
+        } else {
+            
+            this.goHome();
+        }
     }
 
     /**

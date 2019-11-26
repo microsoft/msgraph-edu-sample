@@ -33,8 +33,8 @@ export class BellowsApp extends Component {
 
         SessionHelper.set("classId", classId);
         SessionHelper.set("groupId", groupId);
-        
-        const view: View = ((!classId || !groupId) || (classId === undefined || groupId === undefined)) 
+ 
+        const view: View = ((!classId || !groupId) || classId != undefined || groupId != undefined) 
             ? <View>document.createElement('sign-in-view')
             : <View>document.createElement('main-view');
 
