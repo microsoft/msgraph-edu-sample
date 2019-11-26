@@ -45,11 +45,10 @@ export class ProvidersHelper {
             
             Providers.globalProvider = new TeamsProvider({
                 clientId: clientId,
-                authPopupUrl: 'index.html', // TODO: fix this
+                authPopupUrl: 'auth.html', // TODO: fix this
                 scopes: this._scopes
             });
-
-
+            
         } else {
 
             Providers.globalProvider = new MsalProvider({

@@ -26,8 +26,10 @@ export class BellowsApp extends Component {
         const viewHost = <ViewHost>this.shadowRoot!.querySelector('view-host');
         NavigationHelper.setActiveViewHost(viewHost);
 
-        const classId = SessionHelper.get<string>('classId');
-        const groupId = SessionHelper.get<string>('groupId');
+
+
+        const classId = SessionHelper.getCookie('classId');
+        const groupId = SessionHelper.getCookie('groupId');
         
         const view: View = (!classId || !groupId) 
             ? <View>document.createElement('sign-in-view')
