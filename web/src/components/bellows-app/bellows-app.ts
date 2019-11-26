@@ -7,6 +7,7 @@
 import { Component, ViewHost } from '..';
 import { PwaBuilderHelper, NavigationHelper, SessionHelper, ProvidersHelper } from '../../helpers/';
 import { View } from '../view';
+import { Session } from 'inspector';
 
 export class BellowsApp extends Component {
     
@@ -28,13 +29,10 @@ export class BellowsApp extends Component {
 
 
 
-        const classId = SessionHelper.getCookie('classId');
-        const groupId = SessionHelper.getCookie('groupId');
-
-        SessionHelper.set("classId", classId);
-        SessionHelper.set("groupId", groupId);
+        const classId = SessionHelper.getLocalStorage('classId');
+        const groupId = SessionHelper.getLocalStorage('groupId');
  
-        const view: View = ((!classId || !groupId) || classId != undefined || groupId != undefined) 
+        const view: View = ((!classId || !groupId)) 
             ? <View>document.createElement('sign-in-view')
             : <View>document.createElement('main-view');
 

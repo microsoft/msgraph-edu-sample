@@ -106,7 +106,7 @@ export class StudyGroups extends Component {
      */
     private async fetchChannels(){
 
-        const groupId = SessionHelper.get<string>('groupId');
+        const groupId = SessionHelper.getLocalStorage<string>('groupId');
         const provider = Providers.globalProvider;
         const graphClient = provider.graph.client;
         const channels = await graphClient.api(`/teams/${groupId}/channels`).get();

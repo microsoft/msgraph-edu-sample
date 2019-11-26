@@ -76,8 +76,8 @@ export class MainView extends View {
 
         if(!parameter){
             parameter = {
-                "groupId": SessionHelper.getCookie("groupId"),
-                "classId": SessionHelper.getCookie("classId")
+                "groupId": SessionHelper.getLocalStorage("groupId"),
+                "classId": SessionHelper.getLocalStorage("classId")
                         };
         }
 
